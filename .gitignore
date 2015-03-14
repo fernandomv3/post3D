@@ -1,0 +1,15 @@
+﻿CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
+install_manifest.txt
+bin
+build
+docs
+lib
+thirdparty
+src/CMakeFiles
+src/cmake_install.cmake
+src/appinfo.h
+test
+thirdparty
