@@ -1,8 +1,8 @@
 ﻿#ifndef LIGHT_H
 #define LIGHT_H
+#include "post3D/Object3D.h"
+#include "post3D/Color.h"
 #include <memory>
-#include "Object3D.h"
-#include "Color.h"
 
 using namespace std;
 using namespace math3D;

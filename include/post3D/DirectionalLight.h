@@ -1,9 +1,9 @@
 ﻿#ifndef DIRECTIONALLIGHT_H
 #define DIRECTIONALLIGHT_H
 
-#include "Object3D.h"
-#include "Light.h"
-#include "Camera.h"
+#include "post3D/Object3D.h"
+#include "post3D/Light.h"
+#include "post3D/Camera.h"
 #include <memory>
 using namespace scene;
 using namespace object3D;

@@ -1,5 +1,5 @@
-﻿#include "TextureMaterial.h"
-#include "GLProgram.h"
+﻿#include "post3D/TextureMaterial.h"
+#include "post3D/GLProgram.h"
 #include <GL/glew.h>
 #include <memory>
 #include <string>

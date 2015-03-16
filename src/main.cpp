@@ -6,16 +6,16 @@
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
 #include <SDL2/SDL_opengl.h>
-#include "Vec3.h"
-#include "SphericalCoord.h"
-#include "Scene.h"
-#include "Renderer.h"
-#include "Geometry.h"
-#include "Mesh.h"
-#include "PhongMaterial.h"
-#include "DirectionalLight.h"
-#include "TextureMaterial.h"
-#include "Texture.h"
+#include "post3D/Vec3.h"
+#include "post3D/SphericalCoord.h"
+#include "post3D/Scene.h"
+#include "post3D/Renderer.h"
+#include "post3D/Geometry.h"
+#include "post3D/Mesh.h"
+#include "post3D/PhongMaterial.h"
+#include "post3D/DirectionalLight.h"
+#include "post3D/TextureMaterial.h"
+#include "post3D/Texture.h"
 
 using namespace math3D;
 using namespace render;

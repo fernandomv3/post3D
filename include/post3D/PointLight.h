@@ -1,7 +1,7 @@
 ﻿#ifndef POINTLIGHT_H
 #define POINTLIGHT_H
-#include "Light.h"
-#include "Camera.h"
+#include "post3D/Light.h"
+#include "post3D/Camera.h"
 #include <memory>
 using namespace std;
 using namespace scene;

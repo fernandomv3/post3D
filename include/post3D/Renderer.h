@@ -1,12 +1,12 @@
 ﻿#ifndef RENDERER_H
 #define RENDERER_H
 
+#include "post3D/Framebuffer.h"
+#include "post3D/ShadowMapFramebuffer.h"
+#include "post3D/Scene.h"
+#include "post3D/Mesh.h"
+#include "post3D/Mat4.h"
 #include <GL/glew.h>
-#include "Framebuffer.h"
-#include "ShadowMapFramebuffer.h"
-#include "Scene.h"
-#include "Mesh.h"
-#include "Mat4.h"
 #include <memory>
 
 using namespace scene;

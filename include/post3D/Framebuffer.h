@@ -1,8 +1,8 @@
 ﻿#ifndef FRAMEBUFFER_H
 #define FRAMEBUFFER_H
+#include "post3D/Texture.h"
 #include <GL/glew.h>
 #include <memory>
-#include "Texture.h"
 
 using namespace texture;
 using namespace std;

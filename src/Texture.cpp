@@ -1,4 +1,4 @@
-﻿#include "Texture.h"
+﻿#include "post3D/Texture.h"
 #include <FreeImagePlus.h>
 namespace texture{
 	Texture::Texture(){

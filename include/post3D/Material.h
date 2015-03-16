@@ -1,14 +1,12 @@
 ﻿#ifndef MATERIAL_H
 #define MATERIAL_H
-#include "GLProgram.h"
-#include "Color.h"
-#include "Texture.h"
-#include "Scene.h"
+#include "post3D/GLProgram.h"
+#include "post3D/Color.h"
+#include "post3D/Texture.h"
+#include "post3D/Scene.h"
 #include <memory>
 #include <string>
-//materials own shaders (vertex, fragment), programs and uniforms
-//future adds -> opacity, bumpmaps, textures, normal maps
-//future -> make material memory self managed
+
 using namespace std;
 using namespace texture;
 using namespace math3D;

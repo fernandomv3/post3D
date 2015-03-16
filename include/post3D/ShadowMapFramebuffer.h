@@ -1,9 +1,9 @@
 ﻿#ifndef SHADOWMAPFRAMEBUFFER_H
 #define SHADOWMAPFRAMEBUFFER_H
 
+#include "post3D/Framebuffer.h"
+#include "post3D/DepthMaterial.h"
 #include <memory>
-#include "Framebuffer.h"
-#include "DepthMaterial.h"
 
 using namespace material;
 using namespace std;

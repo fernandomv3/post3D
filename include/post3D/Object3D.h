@@ -1,9 +1,9 @@
 ﻿#ifndef OBJECT3D_H
 #define OBJECT3D_H
-#include "Vec3.h"
-#include "Mat4.h"
-#include "Quaternion.h"
-#include "Euler.h"
+#include "post3D/Vec3.h"
+#include "post3D/Mat4.h"
+#include "post3D/Quaternion.h"
+#include "post3D/Euler.h"
 #include <memory>
 using namespace std;
 using namespace math3D;

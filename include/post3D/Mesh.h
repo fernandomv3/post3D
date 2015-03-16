@@ -1,10 +1,10 @@
 ﻿#ifndef MESH_H
 #define MESH_H
 
+#include "post3D/Object3D.h"
+#include "post3D/Geometry.h"
+#include "post3D/Material.h"
 #include "memory"
-#include "Object3D.h"
-#include "Geometry.h"
-#include "Material.h"
 
 using namespace std;
 using namespace material;

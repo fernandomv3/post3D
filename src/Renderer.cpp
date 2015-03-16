@@ -1,5 +1,5 @@
-﻿#include "Renderer.h"
-#include "Vec3.h"
+﻿#include "post3D/Renderer.h"
+#include "post3D/Vec3.h"
 #include <iostream>
 
 using namespace std;

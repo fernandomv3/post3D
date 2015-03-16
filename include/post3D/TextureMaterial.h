@@ -1,8 +1,8 @@
 ﻿#ifndef TEXTUREMATERIAL_H
 #define TEXTUREMATERIAL_H
 
-#include "Material.h"
-#include "Scene.h"
+#include "post3D/Material.h"
+#include "post3D/Scene.h"
 
 using namespace scene;
 namespace material{

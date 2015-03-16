@@ -1,9 +1,9 @@
-﻿#include "Vec3.h"
+﻿#include "post3D/Vec3.h"
+#include "post3D/Mat4.h"
 #include <cmath>
 #include <cstdlib>
 #include <cassert>
 #include <iostream>
-#include "Mat4.h"
 namespace math3D{
 
 	Vec3::Vec3(float x, float y, float z){

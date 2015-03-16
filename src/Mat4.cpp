@@ -1,6 +1,6 @@
-﻿#include "Vec3.h"
-#include "Mat4.h"
-#include "Quaternion.h"
+﻿#include "post3D/Vec3.h"
+#include "post3D/Mat4.h"
+#include "post3D/Quaternion.h"
 #include <iostream>
 namespace math3D{
 	Mat4::Mat4(){

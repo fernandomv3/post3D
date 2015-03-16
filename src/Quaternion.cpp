@@ -1,8 +1,8 @@
-﻿#include <string>
+﻿#include "post3D/Quaternion.h"
+#include "post3D/Vec3.h"
+#include "post3D/Euler.h"
+#include <string>
 #include <cmath>
-#include "Quaternion.h"
-#include "Vec3.h"
-#include "Euler.h"
 namespace math3D{
 
 	Quaternion::Quaternion(){

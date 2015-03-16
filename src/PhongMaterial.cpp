@@ -1,5 +1,5 @@
-﻿#include "PhongMaterial.h"
-#include "GLProgram.h"
+﻿#include "post3D/PhongMaterial.h"
+#include "post3D/GLProgram.h"
 #include <GL/glew.h>
 #include <memory>
 #include <string>

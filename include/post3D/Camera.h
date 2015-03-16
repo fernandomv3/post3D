@@ -1,8 +1,8 @@
 ﻿#ifndef CAMERA_H
 #define CAMERA_H
-#include "Mat4.h"
-#include "Vec3.h"
-#include "Object3D.h"
+#include "post3D/Mat4.h"
+#include "post3D/Vec3.h"
+#include "post3D/Object3D.h"
 #include <memory>
 using namespace std;
 using namespace object3D;

@@ -1,8 +1,8 @@
-﻿#include "PointLight.h"
-#include "Light.h"
-#include "Camera.h"
+﻿#include "post3D/PointLight.h"
+#include "post3D/Light.h"
+#include "post3D/Camera.h"
+#include "post3D/Vec3.h"
 #include <memory>
-#include "Vec3.h"
 using namespace std;
 using namespace scene;
 

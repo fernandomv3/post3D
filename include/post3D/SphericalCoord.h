@@ -1,7 +1,7 @@
 ﻿#ifndef SPHERICALCOORD_H
 #define SPHERICALCOORD_H
 
-#include "Vec3.h"
+#include "post3D/Vec3.h"
 namespace math3D{
 	class SphericalCoord{
 	private:

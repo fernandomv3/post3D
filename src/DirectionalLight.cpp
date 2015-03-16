@@ -1,5 +1,5 @@
-﻿#include "DirectionalLight.h"
-#include "Vec3.h"
+﻿#include "post3D/DirectionalLight.h"
+#include "post3D/Vec3.h"
 
 namespace light{
 	DirectionalLight::DirectionalLight():Light(){

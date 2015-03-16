@@ -1,13 +1,13 @@
 ﻿#ifndef SCENE_H
 #define SCENE_H
 
+#include "post3D/Camera.h"
+#include "post3D/PointLight.h"
+#include "post3D/Light.h"
+#include "post3D/DirectionalLight.h"
+#include "post3D/Object3D.h"
 #include <memory>
 #include <vector>
-#include "Camera.h"
-#include "PointLight.h"
-#include "Light.h"
-#include "DirectionalLight.h"
-#include "Object3D.h"
 
 using namespace std;
 using namespace light;

@@ -1,7 +1,7 @@
 ﻿#include <string>
 #include <cmath>
-#include "Euler.h"
-#include "Quaternion.h"
+#include "post3D/Euler.h"
+#include "post3D/Quaternion.h"
 namespace math3D{
 
 		Euler::Euler(){
