@@ -14,6 +14,10 @@ namespace render{
 		this->softShadows = true;
 	}
 
+	Renderer::~Renderer(){
+		glDeleteVertexArrays(1,(GLuint*)&this->vao);
+	}
+
 	bool Renderer::getRenderShadows()const{
 		return this->renderShadows;
 	}

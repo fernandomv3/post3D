@@ -36,11 +36,11 @@ namespace render{
 		Renderer& setUpVertexAttributes(shared_ptr<Geometry> geom, shared_ptr<GLProgram> prog, bool shadowPass = false);
 	public:
 		Renderer();
-		Renderer(const Renderer& renderer)=default;
+		Renderer(const Renderer& renderer)=delete;
 		Renderer(Renderer&& renderer)=default;
-		Renderer& operator=(const Renderer& renderer)=default;
+		Renderer& operator=(const Renderer& renderer)=delete;
 		Renderer& operator=(Renderer&& renderer)=default;
-		~Renderer()=default;
+		~Renderer();
 		Renderer& render(Scene& scene);
 
 		bool getRenderShadows()const;
