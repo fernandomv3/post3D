@@ -17,10 +17,10 @@ namespace render{
 	public:
 		Framebuffer();
 		Framebuffer(int width, int height);
-		Framebuffer(const Framebuffer& fb);
+		Framebuffer(const Framebuffer& fb)=delete;
 		Framebuffer(Framebuffer&& fb);
-		~Framebuffer();
-		Framebuffer& operator=(const Framebuffer& fb);
+		virtual ~Framebuffer();
+		Framebuffer& operator=(const Framebuffer& fb)=delete;
 		Framebuffer& operator=(Framebuffer&& fb);
 		int getFbo()const;
 		int getDepthBuffer()const;

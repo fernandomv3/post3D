@@ -12,22 +12,22 @@ namespace render{
 		this->sampleSize = 1;
 	}
 
-	ShadowMapFramebuffer::ShadowMapFramebuffer(const ShadowMapFramebuffer& smfb):Framebuffer(smfb){
+	/*ShadowMapFramebuffer::ShadowMapFramebuffer(const ShadowMapFramebuffer& smfb):Framebuffer(smfb){
 		this->material = smfb.material;
 		this->sampleSize = smfb.sampleSize;
-	}
+	}*/
 
-	ShadowMapFramebuffer::ShadowMapFramebuffer(ShadowMapFramebuffer&& smfb):Framebuffer(smfb){
+	ShadowMapFramebuffer::ShadowMapFramebuffer(ShadowMapFramebuffer&& smfb):Framebuffer(move(smfb)){
 		this->material = move(smfb.material);
 		this->sampleSize = smfb.sampleSize;
 	}
 
-	ShadowMapFramebuffer& ShadowMapFramebuffer::operator=(const ShadowMapFramebuffer& smfb){
+	/*ShadowMapFramebuffer& ShadowMapFramebuffer::operator=(const ShadowMapFramebuffer& smfb){
 		Framebuffer::operator=(smfb);
 		this->material = smfb.material;
 		this->sampleSize = smfb.sampleSize;
 		return *this;
-	}
+	}*/
 
 	ShadowMapFramebuffer& ShadowMapFramebuffer::operator=(ShadowMapFramebuffer&& smfb){
 		Framebuffer::operator=(move(smfb));

@@ -16,9 +16,9 @@ namespace render{
 	public:
 		ShadowMapFramebuffer();
 		ShadowMapFramebuffer(int width, int height);
-		ShadowMapFramebuffer(const ShadowMapFramebuffer& smfb);
+		ShadowMapFramebuffer(const ShadowMapFramebuffer& smfb)=delete;
 		ShadowMapFramebuffer(ShadowMapFramebuffer&& smfb);
-		ShadowMapFramebuffer& operator=(const ShadowMapFramebuffer& smfb);
+		ShadowMapFramebuffer& operator=(const ShadowMapFramebuffer& smfb)=delete;
 		ShadowMapFramebuffer& operator=(ShadowMapFramebuffer&& smfb);
 		ShadowMapFramebuffer& create();
 		bool configure();

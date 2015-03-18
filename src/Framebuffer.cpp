@@ -18,13 +18,13 @@ namespace render{
 		this->height = height;
 	}
 
-	Framebuffer::Framebuffer(const Framebuffer& fb){
+	/*Framebuffer::Framebuffer(const Framebuffer& fb){
 		this->fbo = fb.fbo;
 		this->depthBuffer = fb.depthBuffer;
 		this->texture = fb.texture;
 		this->width = fb.width;
 		this->height = fb.height;
-	}
+	}*/
 
 	Framebuffer::Framebuffer(Framebuffer&& fb){
 		this->fbo = fb.fbo;
@@ -35,17 +35,18 @@ namespace render{
 	}
 
 	Framebuffer::~Framebuffer(){
-
+		int buffers[2] = {this->fbo,this->depthBuffer};
+		glDeleteFramebuffers(2,(GLuint*)&buffers);
 	}
 
-	Framebuffer& Framebuffer::operator=(const Framebuffer& fb){
+	/*Framebuffer& Framebuffer::operator=(const Framebuffer& fb){
 		this->fbo = fb.fbo;
 		this->depthBuffer = fb.depthBuffer;
 		this->texture = fb.texture;
 		this->width = fb.width;
 		this->height = fb.height;
 		return *this;
-	}
+	}*/
 
 	Framebuffer& Framebuffer::operator=(Framebuffer&& fb){
 		this->fbo = fb.fbo;
