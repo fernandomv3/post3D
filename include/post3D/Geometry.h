@@ -26,11 +26,11 @@ namespace object3D{
 		bool initialized;
 	public:
 		Geometry();
-		Geometry(const Geometry& geom)=default;
+		Geometry(const Geometry& geom)=delete;
 		Geometry(Geometry&& geom)=default;
-		Geometry& operator=(const Geometry& geom)=default;
+		Geometry& operator=(const Geometry& geom)=delete;
 		Geometry& operator=(Geometry&& geom)=default;
-		~Geometry()=default;
+		~Geometry();
 
 		const vector<float>& getVertices()const;
 		const vector<int>& getElements()const;

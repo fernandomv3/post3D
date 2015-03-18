@@ -3,6 +3,7 @@
 #include "assimp/scene.h"
 #include "assimp/mesh.h"
 #include "assimp/postprocess.h"
+#include "GL/glew.h"
 
 
 namespace object3D{
@@ -23,6 +24,17 @@ namespace object3D{
 		this->texCoords = vector<float>();
 		this->tangents = vector<float>();
 		this->bitangents = vector<float>();
+	}
+
+	Geometry::~Geometry(){
+		int buffers[5] = {
+			this->vertexBuffer,
+			this->elementBuffer,
+			this->normalBuffer,
+			this->texCoordBuffer,
+			this->tangentBuffer
+		};
+		glDeleteBuffers(5,(GLuint*)(&buffers));
 	}
 /*
 	Geometry::Geometry(const Geometry& geom){
