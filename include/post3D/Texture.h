@@ -1,4 +1,4 @@
-#ifndef TEXTURE_H
+﻿#ifndef TEXTURE_H
 #define TEXTURE_H
 
 #include <string>
@@ -17,11 +17,11 @@ namespace texture{
 		int samplerObject;
 	public:
 		Texture();
-		Texture(const Texture& texture);
+		Texture(const Texture& texture)=delete;
 		Texture(Texture&& texture);
-		Texture& operator=(const Texture& texture);
+		Texture& operator=(const Texture& texture)=delete;
 		Texture& operator=(Texture&& texture);
-		~Texture()=default;
+		~Texture();
 		Texture& loadFile(const string& src, bool gamma = true);
 		int makeSampler();
 		int createTexture(GLenum target = GL_TEXTURE_2D,int width =0, int height = 0,GLenum innerFormat=GL_SRGB8,GLenum format=GL_SRGB8,char* data = nullptr);

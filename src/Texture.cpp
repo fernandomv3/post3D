@@ -10,7 +10,7 @@ namespace texture{
 		this->samplerObject = 0;
 	}
 
-	Texture::Texture(const Texture& texture){
+	/*Texture::Texture(const Texture& texture){
 		this->sourceFile = texture.sourceFile;
 		this->height = texture.height;
 		this->width = texture.width;
@@ -20,7 +20,7 @@ namespace texture{
 		for(int i = 0 ; i < texture.width * texture.height; i++){
 			this->image[i] = texture.image[i];
 		}
-	}
+	}*/
 
 	Texture::Texture(Texture&& texture){
 		this->sourceFile = texture.sourceFile;
@@ -31,7 +31,7 @@ namespace texture{
 		this->image = move(texture.image);
 	}
 
-	Texture& Texture::operator=(const Texture& texture){
+	/*Texture& Texture::operator=(const Texture& texture){
 		this->sourceFile = texture.sourceFile;
 		this->height = texture.height;
 		this->width = texture.width;
@@ -42,7 +42,7 @@ namespace texture{
 			this->image[i] = texture.image[i];
 		}
 		return *this;
-	}
+	}*/
 
 	Texture& Texture::operator=(Texture&& texture){
 		this->sourceFile = texture.sourceFile;
@@ -52,6 +52,11 @@ namespace texture{
 		this->samplerObject = texture.samplerObject;
 		this->image = move(texture.image);
 		return *this;
+	}
+
+	Texture::~Texture(){
+		glDeleteTextures(1,(GLuint*)&this->texture);
+		glDeleteSamplers(1,(GLuint*)&this->samplerObject);
 	}
 
 	Texture& Texture::loadFile(const string& src, bool gamma){
