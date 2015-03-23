@@ -6,6 +6,7 @@
 #include <memory>
 
 using namespace std;
+using namespace texture;
 
 namespace render{
 
@@ -112,17 +113,17 @@ public:
    * Binds the FBO as render target.
    * All render commands will output the results to the Gbuffer.
    */
-  Gbuffer& bindForWriting();
+  GBuffer& bindForWriting();
   /**
    * Binds each texture.
    * Each Texture will be bound to be used by the next rendering stage.
    * @todo Add parameters to this method as configuration values
    */
-  Gbuffer& bindForReading();
+  GBuffer& bindForReading();
   /**
    * Deactivates the render target.
    */
-  Gbuffer& deactivate();
+  GBuffer& deactivate();
 };
 }
 #endif

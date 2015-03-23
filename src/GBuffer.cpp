@@ -1,10 +1,14 @@
-﻿#include "post3D/Gbuffer.h"
+﻿#include "post3D/GBuffer.h"
+#include <GL/glew.h>
+#include <iostream>
+
+using namespace std;
 
 namespace render{
 
 GBuffer::GBuffer(){
   this->fbo =0;
-  this->textures = vector<Texture>();
+  this->textures = vector<shared_ptr<Texture> >();
   this->depthTexture = shared_ptr<Texture>();
   this->width =0;
   this->height = 0;
@@ -12,7 +16,7 @@ GBuffer::GBuffer(){
 
 GBuffer::GBuffer(int width, int height){
   this->fbo =0;
-  this->textures = vector<Texture>();
+  this->textures = vector<shared_ptr<Texture> >();
   this->depthTexture = shared_ptr<Texture>();
   this->width =width;
   this->height = height;
@@ -85,12 +89,12 @@ GBuffer& GBuffer::create(){
   glBindFramebuffer(GL_FRAMEBUFFER,this->fbo);
   for(int i=0; i<4;i++){
     auto tex = shared_ptr<Texture>(new Texture());
-    tex->setTexture(this->texture->createTexture(
+    tex->setTexture(tex->createTexture(
       GL_TEXTURE_2D,
       this->width,
       this->height,
-      GL_SRGBA8,
-      GL_SRGBA8,
+      GL_RGBA8,
+      GL_RGBA8,
       nullptr
     ));
     this->textures.push_back(tex);
@@ -116,16 +120,16 @@ GBuffer& GBuffer::configure(){
       GL_DRAW_FRAMEBUFFER,
       GL_COLOR_ATTACHMENT0 + i,
       GL_TEXTURE_2D, 
-      this->textures[i],
+      this->textures[i]->getTexture(),
       0
     );
   }
-  glBindTexture(GL_TEXTURE_2D,this->depthTexture->getTExture());
+  glBindTexture(GL_TEXTURE_2D,this->depthTexture->getTexture());
   glFramebufferTexture2D(
     GL_DRAW_FRAMEBUFFER,
     GL_DEPTH_ATTACHMENT,
     GL_TEXTURE_2D, 
-    this->depthTexture->getTExture(),
+    this->depthTexture->getTexture(),
     0
   );
   GLenum drawBuffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
@@ -137,22 +141,22 @@ GBuffer& GBuffer::configure(){
   return *this;
 }
 
-Gbuffer& GBuffer::bindForWriting(){
+GBuffer& GBuffer::bindForWriting(){
   glBindFramebuffer(GL_FRAMEBUFFER, this->fbo);
   glViewport(0,0,this->width,this->height);
   return *this;
 }
 
-Gbuffer& GBuffer::bindForReading(){
+GBuffer& GBuffer::bindForReading(){
   glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);/*Sets the default framebuffer*/
   for(int i = 0; i< 4;i++){
-    glActiveTExture(GL_TEXTURE0 + i);
+    glActiveTexture(GL_TEXTURE0 + i);
     glBindTexture(GL_TEXTURE_2D,this->textures[i]->getTexture());
   }
   return *this;
 }
 
-Gbuffer& GBuffer::deactivate(){
+GBuffer& GBuffer::deactivate(){
   glBindFramebuffer(GL_FRAMEBUFFER,0);
   glViewport(0,0,this->width,this->height);
   return *this;
