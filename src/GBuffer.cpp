@@ -1,9 +1,8 @@
-﻿#include "post3D/GBuffer.h"
+#include "post3D/GBuffer.h"
 #include <GL/glew.h>
 #include <iostream>
 
 using namespace std;
-
 namespace render{
 
 GBuffer::GBuffer(){
@@ -119,7 +118,7 @@ GBuffer& GBuffer::configure(){
     glFramebufferTexture2D(
       GL_DRAW_FRAMEBUFFER,
       GL_COLOR_ATTACHMENT0 + i,
-      GL_TEXTURE_2D, 
+      GL_TEXTURE_2D,
       this->textures[i]->getTexture(),
       0
     );
