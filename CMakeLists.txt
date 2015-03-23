@@ -97,7 +97,7 @@ ENDFOREACH (CONFIGINPUT ${CONFIGINPUTS})
 #Add thirdparty directories first
 #
 ADD_SUBDIRECTORY(src)
-ADD_SUBDIRECTORY(test)
+#ADD_SUBDIRECTORY(test)
 
 #
 # Add Install Targets
