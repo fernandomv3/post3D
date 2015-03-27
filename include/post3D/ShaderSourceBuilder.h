@@ -21,7 +21,7 @@ public:
   ShaderSourceBuilder();
   ShaderSourceBuilder(const ShaderSourceBuilder& ssb)=default;
   ShaderSourceBuilder(ShaderSourceBuilder&& ssb)=default;
-  ShaderSourceBuilder& operator=(const ShaderSourceBuilder& ssb);=default
+  ShaderSourceBuilder& operator=(const ShaderSourceBuilder& ssb)=default;
   ShaderSourceBuilder& operator=(ShaderSourceBuilder&& ssb)=default;
   ~ShaderSourceBuilder()=default;
 };

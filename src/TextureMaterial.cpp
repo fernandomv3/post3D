@@ -30,8 +30,7 @@ namespace material{
 	        "#endif\n"
 	        "    \n"
 	        "void main(){\n"
-	        "	outputColor= vec4(0.0,0.0,0.0,0.0);//diffuseColor;\n"
-	        "	//outputColor= texture2D(colorMap,vertexPosition.xy * 0.5 + 0.5);\n"
+	        "	outputColor= texture2D(colorMap,vertexPosition.xy * 0.5 + 0.5);\n"
 	        "}\n"
 		);
 	}
