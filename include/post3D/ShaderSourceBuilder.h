@@ -25,6 +25,7 @@ public:
   ShaderSourceBuilder& operator=(ShaderSourceBuilder&& ssb)=default;
   ~ShaderSourceBuilder()=default;
 };
+string get_file_contents(const char *filename);
 }
 
 #endif

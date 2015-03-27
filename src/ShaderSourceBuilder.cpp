@@ -1,4 +1,7 @@
-﻿#include "post3D/ShaderSourceBuilder.h"  
+﻿#include "post3D/ShaderSourceBuilder.h" 
+#include <fstream>
+#include <streambuf>
+#include <cerrno>
 
 namespace material{
 
@@ -251,6 +254,14 @@ ShaderSourceBuilder::ShaderSourceBuilder(){
       "  depth = 1.0 - (1.0 - depth) *25.0;\n"
       "  outputColor= vec4(depth);\n"}
   };
+}
+
+string get_file_contents(const char *filename){
+  ifstream in(filename, ios::in | ios::binary);
+  if (in){
+    return(std::string((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>()));
+  }
+  throw(errno);
 }
 
 }
