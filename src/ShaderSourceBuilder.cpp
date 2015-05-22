@@ -88,7 +88,7 @@ ShaderSourceBuilder::ShaderSourceBuilder(){
       "uniform sampler2D shadowMap;\n"
       "#endif\n"},
     {"PCFShadow",
-      "#if define(SHADOWMAP) && define(PCFSHADOW)"
+      "#if defined(SHADOWMAP) && defined(PCFSHADOW)\n"
       "uniform vec2 shadowMapSize;\n"
       "uniform int sampleSize;\n"
       "#endif\n"}
@@ -147,7 +147,7 @@ ShaderSourceBuilder::ShaderSourceBuilder(){
       "}\n"
       "#endif"},
     {"shadowFactorFunc",
-      "#ifdef SHADOWMAP"
+      "#ifdef SHADOWMAP\n"
       "float calculateShadowFactor(in vec4 lightSpacePos){\n"
       "  vec3 projCoords = lightSpacePos.xyz / lightSpacePos.w;\n"
       "  vec3 uv = 0.5 * projCoords + 0.5;\n"
@@ -159,7 +159,7 @@ ShaderSourceBuilder::ShaderSourceBuilder(){
       "}\n"
       "#endif\n"},
     {"calculateNormalFunc",
-      "#ifdef NORMALMAP"
+      "#ifdef NORMALMAP\n"
       "vec4 calculateNormal(in vec4 vNormal,in vec4 vTangent, in vec2 uv ,in sampler2D normalMap){\n"
       "  vec3 normal = normalize(vNormal).xyz;\n"
       "  vec3 tangent = normalize(vTangent).xyz;\n"
@@ -219,16 +219,13 @@ ShaderSourceBuilder::ShaderSourceBuilder(){
       "  shadowFactor = calculateShadowFactor(depthPosition);\n"
       "  #endif\n"},
     {"addDirectionalLightsFactor",
-      "  #if MAX_P_LIGHTS > 0\n"
-      "  for(int i=0; i< MAX_P_LIGHTS ;i++){\n"
-      "    vec4 difference = pointLightPosition[i] - worldSpacePosition;\n"
-      "    vec4 normDirection = normalize(difference);\n"
-      "    vec4 attenLightIntensity = attenuateLight(pointLightColor[i],pointLightAttenuation[i],difference);\n"
+      "  #if MAX_DIR_LIGHTS > 0\n"
+      "  for(int i=0; i< MAX_DIR_LIGHTS ;i++){\n"
+      "    vec4 normDirection = normalize(dirLightVectorToLight[i]);\n"
       "    float cosAngIncidence;\n"
       "    float blinnPhongTerm = calculateBlinnPhongTerm(normDirection,normal,viewDirection,material.shininess,cosAngIncidence);\n"
-      "    \n"
-      "    outputColor = outputColor + (attenLightIntensity * diffuseColor * cosAngIncidence * pointLightIntensity[i] / maxLightIntensity);\n"
-      "    outputColor = outputColor + (specularColor * attenLightIntensity * blinnPhongTerm * pointLightIntensity[i] / maxLightIntensity);\n"
+      "    outputColor = outputColor + (shadowFactor * dirLightColor[i] * diffuseColor * cosAngIncidence * dirLightIntensity[i] / maxLightIntensity);\n"
+      "    outputColor = outputColor + (shadowFactor * dirLightColor[i] * specularColor * blinnPhongTerm * dirLightIntensity[i] / maxLightIntensity);\n"
       "  }\n"
       "  #endif\n"},
     {"addPointLightsFactor",
@@ -244,6 +241,7 @@ ShaderSourceBuilder::ShaderSourceBuilder(){
       "    outputColor = outputColor + (specularColor * attenLightIntensity * blinnPhongTerm * pointLightIntensity[i] / maxLightIntensity);\n"
       "  }\n"
       "  #endif\n"},
+    {"addAmbientLightFactor", "outputColor = outputColor + (diffuseColor * ambientLight);\n"},
     {"gammaCorrection",
       "  vec4 gamma = vec4(invGamma);\n"
       "  gamma.w = 1.0;\n"
