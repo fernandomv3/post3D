@@ -12,6 +12,7 @@ namespace render{
 		this->shadowMap = unique_ptr<ShadowMapFramebuffer>(new ShadowMapFramebuffer(1280,720));
 		this->renderShadows = true;
 		this->softShadows = true;
+		this->renderDeferred =  false;
 	}
 
 	Renderer::~Renderer(){
@@ -26,6 +27,10 @@ namespace render{
 		return this->softShadows;
 	}
 
+	bool Renderer::getRenderDeferred()const{
+		return this->renderDeferred;
+	}
+
 	Renderer& Renderer::setRenderShadows(bool renderShadows){
 		this->renderShadows = renderShadows;
 		return *this;
@@ -33,6 +38,11 @@ namespace render{
 
 	Renderer& Renderer::setSoftShadows(bool softShadows){
 		this->softShadows = softShadows;
+		return *this;
+	}
+
+	Renderer& Renderer::setRenderDeferred(bool renderDeferred){
+		this->renderDeferred = renderDeferred;
 		return *this;
 	}
 
