@@ -22,6 +22,7 @@ namespace render{
 		unique_ptr<ShadowMapFramebuffer> shadowMap;
 		bool renderShadows;
 		bool softShadows;
+		bool renderDeferred;
 		Renderer& activateFramebuffer();
 		Renderer& deactivateFramebuffer();
 		Renderer& activateShadowFramebuffer();
@@ -45,8 +46,10 @@ namespace render{
 
 		bool getRenderShadows()const;
 		bool getSoftShadows()const;
+		bool getRenderDeferred()const;
 		Renderer& setRenderShadows(bool renderShadows);
 		Renderer& setSoftShadows(bool softShadows);
+		Renderer& setRenderDeferred(bool renderDeferred);
 	};
 
 	int makeBuffer(GLenum target, void* data, int size, GLenum usage = GL_STATIC_DRAW);
