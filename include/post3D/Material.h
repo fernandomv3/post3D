@@ -67,7 +67,9 @@ namespace material{
 		unique_ptr<MaterialStruct> getAsStruct() const;
 		MaterialType getType() const;
 		string configureSource(string source,int numDirLights = 0, int numPLights=0,bool colorMap = false,bool normalMap=false,bool shadowMap=false,bool PCFShadows = false);
-		virtual void makePrograms(const Scene& scene);
+		virtual void makePrograms(const Scene& scene, bool deferred = false);
+		virtual void makeForwardShader();
+		virtual void makeDeferredShader();
 	};
 }
 #endif

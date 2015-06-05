@@ -250,7 +250,11 @@ ShaderSourceBuilder::ShaderSourceBuilder(){
     {"outputDepth",
       "  float depth = texture(colorMap,vertexPosition.xy).x;\n"
       "  depth = 1.0 - (1.0 - depth) *25.0;\n"
-      "  outputColor= vec4(depth);\n"}
+      "  outputColor= vec4(depth);\n"},
+    {"outputColorTarget","outputColor = diffuseColor;"},
+    {"outputNormalTarget","outputNormal = normal;"},
+    {"outputPositionTarget","outputPosition = worldSpacePosition;"},
+    {"outputUVTarget","outputUV = vec4(vertexUV,0.0,0.0);"}
   };
 }
 

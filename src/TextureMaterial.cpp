@@ -35,7 +35,7 @@ namespace material{
 		);
 	}
 
-	void TextureMaterial::makePrograms(const Scene& scene){
+	void TextureMaterial::makePrograms(const Scene& scene, bool deferred){
 		this->setProgram(shared_ptr<GLProgram>(new GLProgram()));
 		int vertexShader = this->getProgram()->compileShader(GL_VERTEX_SHADER,this->getVertexShaderSource());
 		this->getProgram()->setVertexShader(vertexShader);

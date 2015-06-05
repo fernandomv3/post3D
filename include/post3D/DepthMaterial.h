@@ -13,7 +13,7 @@ namespace material{
 		DepthMaterial(DepthMaterial&& mat)=default;
 		DepthMaterial& operator=(const DepthMaterial& mat)=default;
 		DepthMaterial& operator=(DepthMaterial&& mat)=default;
-		void makePrograms(const Scene& scene);
+		void makePrograms(const Scene& scene,bool deferred = false);
 	};
 }
 

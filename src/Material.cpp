@@ -206,7 +206,15 @@ namespace material{
         return head + source;
 	}
 
-	void Material::makePrograms(const Scene& scene){
+	void Material::makePrograms(const Scene& scene, bool deferred){
+
+	}
+
+	void Material::makeDeferredShader(){
+
+	}
+
+	void Material::makeForwardShader(){
 
 	}
 

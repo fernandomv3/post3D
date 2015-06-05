@@ -13,7 +13,7 @@ namespace material{
 		TextureMaterial(TextureMaterial&& mat)=default;
 		TextureMaterial& operator=(const TextureMaterial& mat)=default;
 		TextureMaterial& operator=(TextureMaterial&& mat)=default;
-		void makePrograms(const Scene& scene);
+		void makePrograms(const Scene& scene, bool deferred = false);
 	};
 }
 

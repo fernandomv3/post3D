@@ -13,7 +13,9 @@ namespace material{
 		PhongMaterial(PhongMaterial&& mat)=default;
 		PhongMaterial& operator=(const PhongMaterial& mat)=default;
 		PhongMaterial& operator=(PhongMaterial&& mat)=default;
-		void makePrograms(const Scene& scene);
+		void makePrograms(const Scene& scene,bool deferred = false);
+		void makeForwardShader();
+		void makeDeferredShader();
 	};
 }
 
