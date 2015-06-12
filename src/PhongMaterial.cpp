@@ -168,7 +168,7 @@ void PhongMaterial::makeDeferredShader(){
 }
 
 void PhongMaterial::makePrograms(const Scene& scene, bool deferred){
-	this->makeDeferredShader();
+	this->makeForwardShader();
 	this->setProgram(shared_ptr<GLProgram>(new GLProgram()));
 	string vs = this->configureSource(
 		this->getVertexShaderSource(),
