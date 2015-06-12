@@ -24,7 +24,7 @@ namespace texture{
 		~Texture();
 		Texture& loadFile(const string& src, bool gamma = true);
 		int makeSampler();
-		int createTexture(GLenum target = GL_TEXTURE_2D,int width =0, int height = 0,GLenum innerFormat=GL_SRGB8,GLenum format=GL_SRGB8,char* data = nullptr);
+		int createTexture(GLenum target = GL_TEXTURE_2D,int width =0, int height = 0,GLenum innerFormat=GL_SRGB8,GLenum format=GL_SRGB8,char* data = nullptr, GLenum type = GL_UNSIGNED_BYTE);
 		
 		int getHeight()const;
 		int getWidth()const;

@@ -89,7 +89,7 @@ namespace texture{
         return sampler;
 	}
 
-	int Texture::createTexture(GLenum target,int width, int height,GLenum innerFormat,GLenum format,char* data){
+	int Texture::createTexture(GLenum target,int width, int height,GLenum innerFormat,GLenum format,char* data,GLenum type){
         int tex;
         glGenTextures(1,(GLuint*)&tex);
         glBindTexture(target,tex);
@@ -97,7 +97,7 @@ namespace texture{
             target, 0,           //target, level of detail
             innerFormat,                    //internal format
             width, height, 0,           //width, height, border
-            format, GL_UNSIGNED_BYTE,   //external format, type 
+            format, type,   //external format, type 
             data                      //pixels
         );
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

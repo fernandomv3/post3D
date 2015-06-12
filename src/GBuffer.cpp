@@ -92,9 +92,10 @@ GBuffer& GBuffer::create(){
       GL_TEXTURE_2D,
       this->width,
       this->height,
+      GL_RGB32F,
       GL_RGBA8,
-      GL_RGBA8,
-      nullptr
+      nullptr,
+      GL_FLOAT
     ));
     this->textures.push_back(tex);
   }

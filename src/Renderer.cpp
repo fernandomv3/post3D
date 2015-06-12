@@ -13,7 +13,7 @@ Renderer::Renderer(){
 	this->shadowMap = unique_ptr<ShadowMapFramebuffer>(new ShadowMapFramebuffer(1280,720));
 	this->renderShadows = true;
 	this->softShadows = true;
-	this->renderDeferred =  false;
+	this->deferred =  false;
 }
 
 Renderer::~Renderer(){
@@ -29,7 +29,7 @@ bool Renderer::getSoftShadows()const{
 }
 
 bool Renderer::getRenderDeferred()const{
-	return this->renderDeferred;
+	return this->deferred;
 }
 
 Renderer& Renderer::setRenderShadows(bool renderShadows){
@@ -43,7 +43,7 @@ Renderer& Renderer::setSoftShadows(bool softShadows){
 }
 
 Renderer& Renderer::setRenderDeferred(bool renderDeferred){
-	this->renderDeferred = renderDeferred;
+	this->deferred = renderDeferred;
 	return *this;
 }
 
@@ -55,6 +55,22 @@ Renderer& Renderer::activateFramebuffer(){
 		}
 		this->fb->bindForWriting();
 	}
+	return *this;
+}
+
+Renderer& Renderer::activateGBuffer(){
+	if(this->gBuffer){
+		if(!this->gBuffer->getFbo()){
+			this->gBuffer->create();
+			this->gBuffer->configure();
+		}
+		this->gBuffer->bindForWriting();
+	}
+	return *this;
+}
+
+Renderer& Renderer::deactivateGBuffer(){
+	glBindBuffer(GL_FRAMEBUFFER,0);
 	return *this;
 }
 
@@ -589,6 +605,20 @@ Renderer& Renderer::renderForward(Scene& scene){
 	return *this;
 }
 
+Renderer& Renderer::renderDeferred(Scene& scene){
+	this->geometryPassRender(scene);
+	this->lightPassRender(scene);
+	return *this;
+}
+
+Renderer& Renderer::geometryPassRender(Scene& scene){
+	return *this;
+}
+
+Renderer& Renderer::lightPassRender(Scene& scene){
+	return *this;
+}
+
 Renderer& Renderer::render(Scene& scene){
 	this->createVAO();
 
@@ -597,8 +627,8 @@ Renderer& Renderer::render(Scene& scene){
 		scene.setPCFShadows(this->softShadows);
 		this->shadowPassRender(scene);
 
-	if(this->renderDeferred){
-		//this->renderDeferred(scene);
+	if(this->deferred){
+		this->renderDeferred(scene);
 	}else{
 		this->renderForward(scene);
 	}
