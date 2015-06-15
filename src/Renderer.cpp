@@ -106,7 +106,7 @@ Renderer& Renderer::createVAO(){
 	return *this;
 }
 
-vector<unique_ptr<float[]>> Renderer::calculateDirectionalLights(Scene& scene, shared_ptr<Mesh> mesh){
+vector<unique_ptr<float[]>> Renderer::calculateDirectionalLights(Scene& scene){
 	auto result = vector<unique_ptr<float[]>>();
 	int size = scene.getDirectionalLights().size();
 	
@@ -136,7 +136,7 @@ vector<unique_ptr<float[]>> Renderer::calculateDirectionalLights(Scene& scene, s
 	return result;
 }
 
-vector<unique_ptr<float[]>> Renderer::calculatePointLights(Scene& scene, shared_ptr<Mesh> mesh){
+vector<unique_ptr<float[]>> Renderer::calculatePointLights(Scene& scene){
 	auto result = vector<unique_ptr<float[]>>(4);
 	int size = scene.getPointLights().size();
 	
@@ -182,68 +182,68 @@ vector<unique_ptr<float[]>> Renderer::calculateGlobalMatrices(Scene& scene){
 	return result;
 }
 
-Renderer& Renderer::setUpGlobalUniforms(shared_ptr<Uniforms> uniforms, Scene& scene, vector<unique_ptr<float[]>> &matrices, shared_ptr<Mat4> lightWorldMatrix){
-	if(uniforms->unifWorldMatrix != -1){
+Renderer& Renderer::setUpGlobalUniforms(Uniforms& uniforms, Scene& scene, vector<unique_ptr<float[]>> &matrices, Mat4& lightWorldMatrix){
+	if(uniforms.unifWorldMatrix != -1){
 		glUniformMatrix4fv(
-			uniforms->unifWorldMatrix,
+			uniforms.unifWorldMatrix,
 			1,
 			GL_TRUE,
 			matrices[0].get()
 		);
 	}
-	if(uniforms->unifProjectionMatrix != -1){
+	if(uniforms.unifProjectionMatrix != -1){
 		glUniformMatrix4fv(
-			uniforms->unifProjectionMatrix,
+			uniforms.unifProjectionMatrix,
 			1,
 			GL_TRUE,
 			matrices[1].get()
 		);
 	}
-	if(uniforms->unifDepthWorldMatrix != -1){
+	if(uniforms.unifDepthWorldMatrix != -1){
 		glUniformMatrix4fv(
-			uniforms->unifDepthWorldMatrix,
+			uniforms.unifDepthWorldMatrix,
 			1,
 			GL_TRUE,
-			lightWorldMatrix->getAsArray().get()
+			lightWorldMatrix.getAsArray().get()
 		);
 	}
-	if(uniforms->unifInvGamma != -1){
+	if(uniforms.unifInvGamma != -1){
 		GLfloat invGamma = 1/scene.getCamera()->getGamma();
 		glUniform1f(
-			uniforms->unifInvGamma,
+			uniforms.unifInvGamma,
 			invGamma
 		);
 	}
-	if(uniforms->unifMaxLightIntensity != -1){
+	if(uniforms.unifMaxLightIntensity != -1){
 		GLfloat maxLightIntensity = scene.getMaxLightIntensity();
 		glUniform1f(
-			uniforms->unifMaxLightIntensity,
+			uniforms.unifMaxLightIntensity,
 			maxLightIntensity
 		);
 	}
 	return *this;
 }
 
-Renderer& Renderer::setUpDirectionalLightsUniforms(shared_ptr<Uniforms> uniforms,Scene& scene,vector<unique_ptr<float[]>>& dlightData){
+Renderer& Renderer::setUpDirectionalLightsUniforms(Uniforms& uniforms,Scene& scene,vector<unique_ptr<float[]>>& dlightData){
 	int numDirLights = scene.getDirectionalLights().size();
 	if(numDirLights > 0){
-		if(uniforms->unifDirLightColor != -1){
+		if(uniforms.unifDirLightColor != -1){
 			glUniform4fv(
-				uniforms->unifDirLightColor,
+				uniforms.unifDirLightColor,
 				numDirLights,
 				dlightData[1].get()
 			);
 		}
-		if(uniforms->unifDirLightVectorToLight != -1){
+		if(uniforms.unifDirLightVectorToLight != -1){
 			glUniform4fv(
-				uniforms->unifDirLightVectorToLight,
+				uniforms.unifDirLightVectorToLight,
 				numDirLights,
 				dlightData[0].get()
 			);
 		}
-		if(uniforms->unifDirLightIntensity != -1){
+		if(uniforms.unifDirLightIntensity != -1){
 			glUniform1fv(
-				uniforms->unifDirLightIntensity,
+				uniforms.unifDirLightIntensity,
 				numDirLights,
 				dlightData[2].get()
 			);
@@ -252,26 +252,26 @@ Renderer& Renderer::setUpDirectionalLightsUniforms(shared_ptr<Uniforms> uniforms
 	return *this;
 }
 
-Renderer& Renderer::setUpPointLightsUniforms(shared_ptr<Uniforms> uniforms,Scene& scene,vector<unique_ptr<float[]>>& plightData){
+Renderer& Renderer::setUpPointLightsUniforms(Uniforms& uniforms,Scene& scene,vector<unique_ptr<float[]>>& plightData){
 	int numPLights = scene.getPointLights().size();
-	if(numPLights > 0 && uniforms->unifPointLightColor != -1){
+	if(numPLights > 0 && uniforms.unifPointLightColor != -1){
 		glUniform4fv(
-			uniforms->unifPointLightColor,
+			uniforms.unifPointLightColor,
 			numPLights,
 			plightData[0].get()
 		);
 		glUniform4fv(
-			uniforms->unifPointLightPosition,
+			uniforms.unifPointLightPosition,
 			numPLights,
 			plightData[1].get()
 		);
 		glUniform1fv(
-			uniforms->unifPointLightIntensity,
+			uniforms.unifPointLightIntensity,
 			numPLights,
 			plightData[2].get()
 		);
 		glUniform1fv(
-			uniforms->unifPointLightAttenuation,
+			uniforms.unifPointLightAttenuation,
 			numPLights,
 			plightData[3].get()
 		);
@@ -279,10 +279,10 @@ Renderer& Renderer::setUpPointLightsUniforms(shared_ptr<Uniforms> uniforms,Scene
 	return *this;
 }
 
-Renderer& Renderer::setUpAmbientLightUniforms(shared_ptr<Uniforms> uniforms,Scene& scene,shared_ptr<Light> ambLight){
-	if(uniforms->unifAmbientLight != -1){
+Renderer& Renderer::setUpAmbientLightUniforms(Uniforms& uniforms,Scene& scene,Light& ambLight){
+	if(uniforms.unifAmbientLight != -1){
 		glUniform4fv(
-			uniforms->unifAmbientLight,
+			uniforms.unifAmbientLight,
 			1,
 			scene.getAmbientLight()->getColor()->getAsArray().get()
 		);
@@ -290,82 +290,82 @@ Renderer& Renderer::setUpAmbientLightUniforms(shared_ptr<Uniforms> uniforms,Scen
 	return *this;
 }
 
-Renderer& Renderer::setUpObjectUniforms(shared_ptr<Uniforms> uniforms, shared_ptr<Mesh> mesh){
-	mesh->updateModelMatrix();
-	if(uniforms->unifModelMatrix != -1){
+Renderer& Renderer::setUpObjectUniforms(Uniforms& uniforms, Mesh& mesh){
+	mesh.updateModelMatrix();
+	if(uniforms.unifModelMatrix != -1){
 		glUniformMatrix4fv(
-			uniforms->unifModelMatrix,
+			uniforms.unifModelMatrix,
 			1,
 			GL_TRUE,
-			mesh->getModelMatrix()->getAsArray().get()
+			mesh.getModelMatrix()->getAsArray().get()
 		);
 	}
 	return *this;
 }
 
-Renderer& Renderer::setMaterialUniforms(shared_ptr<Uniforms> uniforms, shared_ptr<Material> material){
-	auto diffuseColor = material->getDiffuseColor()->getAsArray();
-	if(uniforms->unifDiffuseColor != -1){
+Renderer& Renderer::setMaterialUniforms(Uniforms& uniforms, Material& material){
+	auto diffuseColor = material.getDiffuseColor()->getAsArray();
+	if(uniforms.unifDiffuseColor != -1){
 		glUniform4fv(
-			uniforms->unifDiffuseColor,
+			uniforms.unifDiffuseColor,
 			1,
 			diffuseColor.get()
 		);
 	}
-	auto specularColor = material->getSpecularColor()->getAsArray();
-	if(uniforms->unifSpecularColor != -1){
+	auto specularColor = material.getSpecularColor()->getAsArray();
+	if(uniforms.unifSpecularColor != -1){
 		glUniform4fv(
-			uniforms->unifSpecularColor,
+			uniforms.unifSpecularColor,
 			1,
 			specularColor.get()
 		);
 	}
-	float shininess = material->getShininess();
-	if(uniforms->unifShininess != -1){
+	float shininess = material.getShininess();
+	if(uniforms.unifShininess != -1){
 		glUniform1fv(
-			uniforms->unifShininess,
+			uniforms.unifShininess,
 			1,
 			&shininess
 		);
 	}
-	if(uniforms->unifMapSampler != -1){
-		glUniform1i(uniforms->unifMapSampler,MAP);
+	if(uniforms.unifMapSampler != -1){
+		glUniform1i(uniforms.unifMapSampler,MAP);
 	}
-	if(uniforms->unifNormalMapSampler != -1){
-		glUniform1i(uniforms->unifNormalMapSampler,NORMALMAP);
+	if(uniforms.unifNormalMapSampler != -1){
+		glUniform1i(uniforms.unifNormalMapSampler,NORMALMAP);
 	}
-	if(uniforms->unifShadowMapSampler != -1){
-		glUniform1i(uniforms->unifShadowMapSampler,SHADOWMAP);
+	if(uniforms.unifShadowMapSampler != -1){
+		glUniform1i(uniforms.unifShadowMapSampler,SHADOWMAP);
 	}
-	if(uniforms->unifSampleSize != -1){
-		glUniform1i(uniforms->unifSampleSize,this->shadowMap->getSampleSize());
+	if(uniforms.unifSampleSize != -1){
+		glUniform1i(uniforms.unifSampleSize,this->shadowMap->getSampleSize());
 	}
-	if(uniforms->unifShadowMapSize != -1){
-		glUniform2f(uniforms->unifShadowMapSize,this->shadowMap->getWidth(),this->shadowMap->getHeight());
+	if(uniforms.unifShadowMapSize != -1){
+		glUniform2f(uniforms.unifShadowMapSize,this->shadowMap->getWidth(),this->shadowMap->getHeight());
 	}
 
-	if(material->getMap()){
-		if(!material->getMap()->getTexture() && material->getMap()->getSourceFile() != ""){
-			material->getMap()->loadFile(material->getMap()->getSourceFile(),false);
+	if(material.getMap()){
+		if(!material.getMap()->getTexture() && material.getMap()->getSourceFile() != ""){
+			material.getMap()->loadFile(material.getMap()->getSourceFile(),false);
 		}
 		glActiveTexture(GL_TEXTURE0 + MAP);
-		glBindTexture(GL_TEXTURE_2D, material->getMap()->getTexture());
-		if(!material->getMap()->getSampler()){
-			material->getMap()->setSampler(material->getMap()->makeSampler());
+		glBindTexture(GL_TEXTURE_2D, material.getMap()->getTexture());
+		if(!material.getMap()->getSampler()){
+			material.getMap()->setSampler(material.getMap()->makeSampler());
 		}
-		glBindSampler(MAP,material->getMap()->getSampler());
+		glBindSampler(MAP,material.getMap()->getSampler());
 	}
 
-	if(material->getNormalMap()){
-		if(!material->getNormalMap()->getTexture() && material->getNormalMap()->getSourceFile() != ""){
-			material->getNormalMap()->loadFile(material->getNormalMap()->getSourceFile(),false);
+	if(material.getNormalMap()){
+		if(!material.getNormalMap()->getTexture() && material.getNormalMap()->getSourceFile() != ""){
+			material.getNormalMap()->loadFile(material.getNormalMap()->getSourceFile(),false);
 		}
 		glActiveTexture(GL_TEXTURE0 + NORMALMAP);
-		glBindTexture(GL_TEXTURE_2D, material->getNormalMap()->getTexture());
-		if(!material->getNormalMap()->getSampler()){
-			material->getNormalMap()->setSampler(material->getNormalMap()->makeSampler());
+		glBindTexture(GL_TEXTURE_2D, material.getNormalMap()->getTexture());
+		if(!material.getNormalMap()->getSampler()){
+			material.getNormalMap()->setSampler(material.getNormalMap()->makeSampler());
 		}
-		glBindSampler(NORMALMAP,material->getNormalMap()->getSampler());
+		glBindSampler(NORMALMAP,material.getNormalMap()->getSampler());
 	}
 
 	if(this->shadowMap && this->renderShadows){
@@ -380,121 +380,121 @@ Renderer& Renderer::setMaterialUniforms(shared_ptr<Uniforms> uniforms, shared_pt
 	return *this;
 }
 
-Renderer& Renderer::initializeGeometryBuffers(shared_ptr<Geometry> geom){
-	if(!geom->getVertexBuffer() && !geom->getVertices().empty()){
+Renderer& Renderer::initializeGeometryBuffers(Geometry& geom){
+	if(!geom.getVertexBuffer() && !geom.getVertices().empty()){
 		int buf = makeBuffer(
 			GL_ARRAY_BUFFER,
-			(void*)&geom->getVertices().front(),
-			geom->getVertices().size() * sizeof(GLfloat)
+			(void*)&geom.getVertices().front(),
+			geom.getVertices().size() * sizeof(GLfloat)
 		);
-		geom->setVertexBuffer(buf);
+		geom.setVertexBuffer(buf);
 	}
 
-	if(!geom->getElementBuffer() && !geom->getElements().empty()){
+	if(!geom.getElementBuffer() && !geom.getElements().empty()){
 		int buf = makeBuffer(
 			GL_ELEMENT_ARRAY_BUFFER,
-			(void*)&geom->getElements().front(),
-			geom->getElements().size() * sizeof(GLushort)
+			(void*)&geom.getElements().front(),
+			geom.getElements().size() * sizeof(GLushort)
 		);
-		geom->setElementBuffer(buf);
+		geom.setElementBuffer(buf);
 	}
 
-	if(!geom->getNormalBuffer() && !geom->getNormals().empty()){
+	if(!geom.getNormalBuffer() && !geom.getNormals().empty()){
 		int buf = makeBuffer(
 			GL_ARRAY_BUFFER,
-			(void*)&geom->getNormals().front(),
-			geom->getNormals().size() * sizeof(GLfloat)
+			(void*)&geom.getNormals().front(),
+			geom.getNormals().size() * sizeof(GLfloat)
 		);
-		geom->setNormalBuffer(buf);
+		geom.setNormalBuffer(buf);
 	}
-	if(!geom->getTexCoordBuffer() && !geom->getTexCoords().empty()){
+	if(!geom.getTexCoordBuffer() && !geom.getTexCoords().empty()){
 		int buf = makeBuffer(
 			GL_ARRAY_BUFFER,
-			(void*)&geom->getTexCoords().front(),
-			geom->getTexCoords().size() * sizeof(GLfloat)
+			(void*)&geom.getTexCoords().front(),
+			geom.getTexCoords().size() * sizeof(GLfloat)
 		);
-		geom->setTexCoordBuffer(buf);
-	}
-
-	if(!geom->getTangentBuffer() && !geom->getTangents().empty()){
-		int buf = makeBuffer(
-			GL_ARRAY_BUFFER,
-			(void*)&geom->getTangents().front(),
-			geom->getTangents().size() * sizeof(GLfloat)
-		);
-		geom->setTangentBuffer(buf);
+		geom.setTexCoordBuffer(buf);
 	}
 
-	geom->setInitialized(true);
+	if(!geom.getTangentBuffer() && !geom.getTangents().empty()){
+		int buf = makeBuffer(
+			GL_ARRAY_BUFFER,
+			(void*)&geom.getTangents().front(),
+			geom.getTangents().size() * sizeof(GLfloat)
+		);
+		geom.setTangentBuffer(buf);
+	}
+
+	geom.setInitialized(true);
 
 	return *this;
 }
 
-Renderer& Renderer::setUpVertexAttributes(shared_ptr<Geometry> geom, shared_ptr<GLProgram> prog, bool shadowPass){
-	glBindBuffer(GL_ARRAY_BUFFER,geom->getVertexBuffer());
+Renderer& Renderer::setUpVertexAttributes(Geometry& geom, GLProgram& prog, bool shadowPass){
+	glBindBuffer(GL_ARRAY_BUFFER,geom.getVertexBuffer());
 	glVertexAttribPointer(
-		prog->getAttrPosition(),
+		prog.getAttrPosition(),
 		3,
 		GL_FLOAT,
 		GL_FALSE,
 		0,
 		(void*)0
 	);
-	glEnableVertexAttribArray(prog->getAttrPosition());
+	glEnableVertexAttribArray(prog.getAttrPosition());
 
 	if(shadowPass) return *this;
 
-	if(geom->getNormalBuffer()){
-		glBindBuffer(GL_ARRAY_BUFFER,geom->getNormalBuffer());
+	if(geom.getNormalBuffer()){
+		glBindBuffer(GL_ARRAY_BUFFER,geom.getNormalBuffer());
 		glVertexAttribPointer(
-			prog->getAttrNormal(),
+			prog.getAttrNormal(),
 			3,
 			GL_FLOAT,
 			GL_FALSE,
 			0,
 			(void*)0
 		);
-		glEnableVertexAttribArray(prog->getAttrNormal());
+		glEnableVertexAttribArray(prog.getAttrNormal());
 	}
-	if(geom->getTangentBuffer()){
-		glBindBuffer(GL_ARRAY_BUFFER,geom->getTangentBuffer());
+	if(geom.getTangentBuffer()){
+		glBindBuffer(GL_ARRAY_BUFFER,geom.getTangentBuffer());
 		glVertexAttribPointer(
-			prog->getAttrTangent(),
+			prog.getAttrTangent(),
 			3,
 			GL_FLOAT,
 			GL_FALSE,
 			0,
 			(void*)0
 		);
-		glEnableVertexAttribArray(prog->getAttrTangent());
+		glEnableVertexAttribArray(prog.getAttrTangent());
 	}
-	if(geom->getTexCoordBuffer()){
-		glBindBuffer(GL_ARRAY_BUFFER,geom->getTexCoordBuffer());
+	if(geom.getTexCoordBuffer()){
+		glBindBuffer(GL_ARRAY_BUFFER,geom.getTexCoordBuffer());
 		glVertexAttribPointer(
-			prog->getAttrUV(),
+			prog.getAttrUV(),
 			2,
 			GL_FLOAT,
 			GL_FALSE,
 			0,
 			(void*)0
 		);
-		glEnableVertexAttribArray(prog->getAttrUV());
+		glEnableVertexAttribArray(prog.getAttrUV());
 	}
 	return *this;
 }
 
-Renderer& Renderer::drawGeometry(shared_ptr<Geometry> geom){
-	if (!geom->getElements().empty()){
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,geom->getElementBuffer());
+Renderer& Renderer::drawGeometry(Geometry& geom){
+	if (!geom.getElements().empty()){
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,geom.getElementBuffer());
 		glDrawElements(
 			GL_TRIANGLES,
-			geom->getElements().size(),
+			geom.getElements().size(),
 			GL_UNSIGNED_SHORT,
 			(void*)0
 		);
 	}else{
-		glBindBuffer(GL_ARRAY_BUFFER,geom->getVertexBuffer());
-		int numVertices = geom->getVertices().size() / 3;
+		glBindBuffer(GL_ARRAY_BUFFER,geom.getVertexBuffer());
+		int numVertices = geom.getVertices().size() / 3;
 		glDrawArrays(
 			GL_TRIANGLES,
 			0,
@@ -525,7 +525,7 @@ Mat4 Renderer::shadowPassRender(Scene& scene){
 	auto uniforms = material->getProgram()->getUniforms();
 	glUseProgram(material->getProgram()->getProgram());
 
-	this->setUpGlobalUniforms(uniforms,scene,matrices,shared_ptr<Mat4>(new Mat4()));
+	this->setUpGlobalUniforms(*uniforms,scene,matrices,*shared_ptr<Mat4>(new Mat4()));
 
 	for(auto obj : scene.getObjects() ){
 		auto mesh = static_pointer_cast<Mesh>(obj);
@@ -533,13 +533,13 @@ Mat4 Renderer::shadowPassRender(Scene& scene){
 			continue;
 		}
 		if(!mesh->getGeometry()->isInitialized())
-			this->initializeGeometryBuffers(mesh->getGeometry());
+			this->initializeGeometryBuffers(*mesh->getGeometry());
 
-		this->setUpVertexAttributes(mesh->getGeometry(),material->getProgram(),true);
+		this->setUpVertexAttributes(*mesh->getGeometry(),*material->getProgram(),true);
 
-		this->setUpObjectUniforms(uniforms,mesh);
+		this->setUpObjectUniforms(*uniforms,*mesh);
 
-		this->drawGeometry(mesh->getGeometry());
+		this->drawGeometry(*mesh->getGeometry());
 		glDisableVertexAttribArray(material->getProgram()->getAttrPosition());
 	}
 	auto lightWorldMatrix = *scene.getCamera()->getProjectionMatrix() * *scene.getCamera()->getWorldMatrix().get();
@@ -577,27 +577,27 @@ Renderer& Renderer::renderForward(Scene& scene){
 		if(!mesh->getVisible()) continue;
 
 		if(!mesh->getGeometry()->isInitialized())
-			this->initializeGeometryBuffers(mesh->getGeometry());
+			this->initializeGeometryBuffers(*mesh->getGeometry());
 
 		if(!mesh->getMaterial()->getProgram())
 			mesh->getMaterial()->makePrograms(scene);
 
-		this->setUpVertexAttributes(mesh->getGeometry(),mesh->getMaterial()->getProgram());
+		this->setUpVertexAttributes(*mesh->getGeometry(),*mesh->getMaterial()->getProgram());
 
 		glUseProgram(mesh->getMaterial()->getProgram()->getProgram());
 
 		auto uniforms = mesh->getMaterial()->getProgram()->getUniforms();
 
-		this->setUpGlobalUniforms(uniforms,scene,matrices,lightWorldMatrix);
+		this->setUpGlobalUniforms(*uniforms,scene,matrices,*lightWorldMatrix);
 
-		this->setUpDirectionalLightsUniforms(uniforms,scene,dlightData);
-		this->setUpPointLightsUniforms(uniforms,scene,plightData);
-		this->setUpAmbientLightUniforms(uniforms,scene,scene.getAmbientLight());
+		this->setUpDirectionalLightsUniforms(*uniforms,scene,dlightData);
+		this->setUpPointLightsUniforms(*uniforms,scene,plightData);
+		this->setUpAmbientLightUniforms(*uniforms,scene,*scene.getAmbientLight());
 
-		this->setUpObjectUniforms(uniforms,mesh);
-		this->setMaterialUniforms(uniforms,mesh->getMaterial());
+		this->setUpObjectUniforms(*uniforms,*mesh);
+		this->setMaterialUniforms(*uniforms,*mesh->getMaterial());
 
-		this->drawGeometry(mesh->getGeometry());
+		this->drawGeometry(*mesh->getGeometry());
 
 		glDisableVertexAttribArray(mesh->getMaterial()->getProgram()->getAttrPosition());
 	}
