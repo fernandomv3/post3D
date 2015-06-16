@@ -15,23 +15,11 @@ PointLightMaterial::PointLightMaterial():Material(){
 void PointLightMaterial::makeForwardShader(){
 	auto ssb = ShaderSourceBuilder();
 	this->setVertexShaderSource(
-		ssb.attribute["normal"] +
 		ssb.attribute["position"]+
-        ssb.attribute["uv"] +
-        ssb.attribute["tangent"] +
 		"\n" + 
-		ssb.output["vertexNormal"] +
-		ssb.output["worldSpacePosition"] +
-		ssb.output["vertexUV"] +
-		ssb.output["vertexTangent"] +
-		"\n" +
-		ssb.output["depthPosition"] +
-		"\n" +
 		ssb.uniform["modelMatrix"] +
 		ssb.uniform["worldMatrix"] +
 		ssb.uniform["projectionMatrix"] +
-		"\n" + 
-		ssb.uniform["depthWorldMatrix"] +
 		"\n"
         "void main(){\n" +
         	ssb.vertexChunk["homogenizeVertex"] +
@@ -39,11 +27,6 @@ void PointLightMaterial::makeForwardShader(){
         	ssb.vertexChunk["worldSpace"] +
         	ssb.vertexChunk["nDCSpace"] +
         	ssb.vertexChunk["gl_Position_n"] +
-        	ssb.vertexChunk["outDepthPosition"]+
-        	ssb.vertexChunk["outWorldSpacePosition"] +
-        	ssb.vertexChunk["outVertexNormal"] +
-        	ssb.vertexChunk["outVertexUV"] +
-        	ssb.vertexChunk["outVertexTangent"] +
         "}\n"
 	);
 	this->setFragmentShaderSource(

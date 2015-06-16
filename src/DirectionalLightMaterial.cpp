@@ -15,35 +15,11 @@ DirectionalLightMaterial::DirectionalLightMaterial():Material(){
 void DirectionalLightMaterial::makeForwardShader(){
 	auto ssb = ShaderSourceBuilder();
 	this->setVertexShaderSource(
-		ssb.attribute["normal"] +
-		ssb.attribute["position"]+
-        ssb.attribute["uv"] +
-        ssb.attribute["tangent"] +
-		"\n" + 
-		ssb.output["vertexNormal"] +
-		ssb.output["worldSpacePosition"] +
-		ssb.output["vertexUV"] +
-		ssb.output["vertexTangent"] +
+		ssb.attribute["position"] +
 		"\n" +
-		ssb.output["depthPosition"] +
-		"\n" +
-		ssb.uniform["modelMatrix"] +
-		ssb.uniform["worldMatrix"] +
-		ssb.uniform["projectionMatrix"] +
-		"\n" + 
-		ssb.uniform["depthWorldMatrix"] +
-		"\n"
         "void main(){\n" +
         	ssb.vertexChunk["homogenizeVertex"] +
-        	ssb.vertexChunk["modelSpace"] +
-        	ssb.vertexChunk["worldSpace"] +
-        	ssb.vertexChunk["nDCSpace"] +
-        	ssb.vertexChunk["gl_Position_n"] +
-        	ssb.vertexChunk["outDepthPosition"]+
-        	ssb.vertexChunk["outWorldSpacePosition"] +
-        	ssb.vertexChunk["outVertexNormal"] +
-        	ssb.vertexChunk["outVertexUV"] +
-        	ssb.vertexChunk["outVertexTangent"] +
+        	ssb.vertexChunk["gl_Position_h"] +
         "}\n"
 	);
 	this->setFragmentShaderSource(
