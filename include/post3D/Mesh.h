@@ -3,12 +3,14 @@
 
 #include "post3D/Object3D.h"
 #include "post3D/Geometry.h"
-#include "post3D/Material.h"
+//#include "post3D/Material.h"
 #include "memory"
 
+namespace material{
+class Material;
+}
 using namespace std;
 using namespace material;
-
 namespace object3D{
 	class Mesh : public Object3D{
 	private:
