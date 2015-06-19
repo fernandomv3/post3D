@@ -19,7 +19,6 @@ This project aims to develop a game engine using modern OpenGL (>= 3.3), and usi
   * GCC or an alternative, reasonably conformant C++11 compiler.
   * SDL2 Library
   * GLEW Library
-  * FreeImagePlus Library
   * Assimp Library
 
 ## 3. BUILDING
@@ -49,6 +48,6 @@ This project aims to develop a game engine using modern OpenGL (>= 3.3), and usi
 This project could not be possible without these great Open Source software:
 
 * Simple Media Layer (SDL2)
+* SDL2_Image
 * Open Asset Import (Assimp)
 * OpenGL Extension Wrangler (GLEW)
-* FreeImage (Free Image Plus)

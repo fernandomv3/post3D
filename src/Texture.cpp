@@ -1,5 +1,5 @@
 ﻿#include "post3D/Texture.h"
-#include <FreeImagePlus.h>
+#include "SDL2/SDL_image.h"
 namespace texture{
 	Texture::Texture(){
 		this->sourceFile = "";
@@ -60,21 +60,26 @@ namespace texture{
 	}
 
 	Texture& Texture::loadFile(const string& src, bool gamma){
-		fipImage img;
-		img.load(src.c_str());
-		img.convertTo32Bits(); //should check if correct
-		this->width = img.getWidth();
-		this->height = img.getHeight();
-		char* pixels = reinterpret_cast<char*>(img.accessPixels());
+		SDL_Surface* image = IMG_Load(src.c_str());
+		this->width = image->w;
+		this->height = image->h;
+		void* pixels = image->pixels;
+		GLenum imgFormat;
+		if(image->format->BytesPerPixel == 3) {imgFormat = GL_RGB;}
+		else if(image->format->BytesPerPixel == 4) {imgFormat = GL_RGBA;}
 
 		this->texture = this->createTexture(
 			GL_TEXTURE_2D,
 			this->width,
 			this->height,
 			gamma ? GL_SRGB8 : GL_RGB8,
-			GL_BGRA,
-			pixels
+			imgFormat,
+			reinterpret_cast<char*>(pixels)
 		);
+
+		if(image){
+			SDL_FreeSurface(image);
+		}
 
 		return *this;
 	}

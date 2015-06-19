@@ -190,7 +190,7 @@ namespace object3D{
 				result.normals.push_back(norm.z);
 				aiVector3D uv = mesh->mTextureCoords[0][ind];
 				result.texCoords.push_back(uv.x);
-				result.texCoords.push_back(uv.y);
+				result.texCoords.push_back(1 - uv.y);
 				aiVector3D tang = mesh->mTangents[ind];
 				result.tangents.push_back(tang.x);
 				result.tangents.push_back(tang.y);
