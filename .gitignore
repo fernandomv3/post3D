@@ -14,3 +14,4 @@ src/cmake_install.cmake
 src/appinfo.h
 test
 thirdparty
+CMakeCache.txt
