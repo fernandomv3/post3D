@@ -73,6 +73,10 @@ ShaderSourceBuilder::ShaderSourceBuilder(){
       "uniform float pointLightAttenuation[MAX_P_LIGHTS];\n"
       "#endif\n"},
     {"ambientLight","uniform vec4 ambientLight;\n"},
+    {"dirLight",
+      "uniform vec4 dirLightColor;\n"
+      "uniform vec4 dirLightVectorToLight;\n"
+      "uniform float dirLightIntensity;\n"},
     {"colorMap",
       "#ifdef MAP\n"
       "uniform sampler2D colorMap;\n"
@@ -81,6 +85,12 @@ ShaderSourceBuilder::ShaderSourceBuilder(){
       "#ifdef NORMALMAP\n"
       "uniform sampler2D normalMap;\n"
       "#endif\n"},
+    //texturemaps for deferred shading
+    {"deferredPositionMap","uniform sampler2D positionMap;\n"},
+    {"deferredWorldPositionMap","uniform sampler2D worldPositionMap;\n"},
+    {"deferredColorMap","uniform sampler2D colorMap;\n"},
+    {"deferredNormalMap","uniform sampler2D normalMap;\n"},
+    {"deferredUvMap","uniform sampler2D uvMap;\n"},
     {"maxLightIntensity","uniform float maxLightIntensity;\n"},
     {"invGamma","uniform float invGamma;\n"},
     {"shadowMap",
@@ -91,7 +101,8 @@ ShaderSourceBuilder::ShaderSourceBuilder(){
       "#if defined(SHADOWMAP) && defined(PCFSHADOW)\n"
       "uniform vec2 shadowMapSize;\n"
       "uniform int sampleSize;\n"
-      "#endif\n"}
+      "#endif\n"},
+    {"screenSize","uniform vec2 screenSize;\n"}
   };
   this->vertexChunk = {
     {"homogenizeVertex","  vec4 pos = vec4(position,1.0);\n"},
@@ -197,6 +208,17 @@ ShaderSourceBuilder::ShaderSourceBuilder(){
   };
   this->fragmentChunk ={
     {"viewDirection","  vec4 viewDirection = normalize(-worldSpacePosition);\n"},
+    {"texCoord","  gl_FragCoord.xy / screenSize;\n"},
+    {"mappedDepthPosition","  vec4 depthPosition = depthWorldMatrix * texture(positionMap,texCoord);\n"},
+    {"mappedViewDirection","  vec4 viewDirection = normalize(-texture(worldPositionMap,texCoord));\n"},
+    {"mappedDiffuseColor","  vec4 diffuseColor = texture(colorMap,texCoord);\n"},
+    {"mappedNormal","  vec4 normal = normalize(texture(normalMap,texCoord));"},
+    {"directionalLightFactor",
+      "  vec4 normDirection = normalize(dirLightVectorToLight);\n"
+      "  float cosAngIncidence;\n"
+      "  float blinnPhongTerm = calculateBlinnPhongTerm(normDirection,normal,viewDirection,material.shininess,cosAngIncidence);\n"
+      "  outputColor = outputColor + (shadowFactor * dirLightColor * diffuseColor * cosAngIncidence * dirLightIntensity / maxLightIntensity);\n"
+      "  outputColor = outputColor + (shadowFactor * dirLightColor * specularColor * blinnPhongTerm * dirLightIntensity / maxLightIntensity);\n"},
     {"initOutputColor","  outputColor = vec4(0.0,0.0,0.0,1.0);\n"},
     {"materialDiffuseColor","  vec4 diffuseColor = material.diffuseColor;\n"},
     {"materialSpecularColor","  vec4 specularColor = material.specularColor;\n"},
