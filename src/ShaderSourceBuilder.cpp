@@ -208,7 +208,7 @@ ShaderSourceBuilder::ShaderSourceBuilder(){
   };
   this->fragmentChunk ={
     {"viewDirection","  vec4 viewDirection = normalize(-worldSpacePosition);\n"},
-    {"texCoord","  gl_FragCoord.xy / screenSize;\n"},
+    {"texCoord","  vec2 texCoord = gl_FragCoord.xy / screenSize;\n"},
     {"mappedDepthPosition","  vec4 depthPosition = depthWorldMatrix * texture(positionMap,texCoord);\n"},
     {"mappedViewDirection","  vec4 viewDirection = normalize(-texture(worldPositionMap,texCoord));\n"},
     {"mappedDiffuseColor","  vec4 diffuseColor = texture(colorMap,texCoord);\n"},

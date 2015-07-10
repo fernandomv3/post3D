@@ -24,31 +24,27 @@ void DirectionalLightMaterial::makeForwardShader(){
 	);
 	this->setFragmentShaderSource(
 		ssb.uniform["material"] +
-		ssb.uniform["dirLights"] +
-		ssb.uniform["pLights"] +
-		ssb.uniform["ambientLight"] +
-		ssb.uniform["colorMap"] +
-		ssb.uniform["normalMap"] +
+		ssb.uniform["dirLight"] +
+		"\n" +
+		ssb.uniform["deferredPositionMap"]+
+		ssb.uniform["deferredWorldPositionMap"]+
+		ssb.uniform["deferredColorMap"]+
+		ssb.uniform["deferredNormalMap"]+
+		ssb.uniform["deferredUvMap"]+
+		"\n" +
 		ssb.uniform["maxLightIntensity"]+
 		ssb.uniform["invGamma"] +
+		ssb.uniform["depthWorldMatrix"] +
 		ssb.uniform["shadowMap"] +
 		ssb.uniform["PCFShadow"] +
 		"\n" +
-		ssb.attribute["depthPosition"] +
-		ssb.attribute["vertexNormal"] +
-		ssb.attribute["worldSpacePosition"] +
-		ssb.attribute["vertexUV"] +
-		ssb.attribute["vertexTangent"] +
+		ssb.attribute["screenSize"] +
 		"\n" +
 		ssb.output["color"] +
-		"\n" +
-		ssb.helpers["attenuateLightFunc"] +
 		"\n"+
 		ssb.helpers["PCFShadowFactorFunc"] +
 		"\n" +
         ssb.helpers["shadowFactorFunc"] +
-		"\n" +
-		ssb.helpers["calculateNormalFunc"] +
 		"\n" +
 		ssb.helpers["warpFunc"] +
         "\n" +
@@ -57,14 +53,14 @@ void DirectionalLightMaterial::makeForwardShader(){
         ssb.helpers["calculateBlinnPhongTermFunc"] +
 		"\n" +
         "void main(){\n" +
-            ssb.fragmentChunk["viewDirection"] +
             ssb.fragmentChunk["initOutputColor"] +
-            ssb.fragmentChunk["materialDiffuseColor"] +
+            ssb.fragmentChunk["texCoord"] +
+			ssb.fragmentChunk["mappedDepthPosition"] +
+			ssb.fragmentChunk["mappedViewDirection"] +
+			ssb.fragmentChunk["mappedDiffuseColor"] +
             ssb.fragmentChunk["materialSpecularColor"] +
-            ssb.fragmentChunk["interpolatedNormal"] +
+            ssb.fragmentChunk["mappeddNormal"] +
 			"\n" +
-			ssb.fragmentChunk["mapDiffuseColor"] +
-			ssb.fragmentChunk["mapNormal"] +
 			ssb.fragmentChunk["initShadowFactor"] +
             "#ifdef SHADOWMAP\n"
             "#ifdef PCFSHADOW\n"
@@ -74,9 +70,7 @@ void DirectionalLightMaterial::makeForwardShader(){
             "#endif\n"
             "#endif\n"
 			"\n" +
-			ssb.fragmentChunk["addDirectionalLightsFactor"] +
-			ssb.fragmentChunk["addPointLightsFactor"] +
-            ssb.fragmentChunk["addAmbientLightFactor"] +
+			ssb.fragmentChunk["directionalLightsFactor"] +
 			ssb.fragmentChunk["gammaCorrection"] +
         "}\n"
 	);
