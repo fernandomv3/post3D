@@ -1,4 +1,4 @@
-﻿#include "appinfo.h"
+#include "appinfo.h"
 #include <cstdlib>
 #include <iostream>
 #include <sstream>

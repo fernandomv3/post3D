@@ -202,15 +202,25 @@ namespace object3D{
 
 	Geometry generateQuadGeometry(int size){
 		float vertices[18] = {
+			1.0, -1.0, 0.0,
+			1.0, 1.0, 0.0,
+			-1.0, 1.0, 0.0,
 			-1.0, -1.0, 0.0,
-    		1.0, -1.0, 0.0,
-    		-1.0,  1.0, 0.0,
-    		-1.0,  1.0, 0.0,
-    		1.0, -1.0, 0.0,
-    		1.0,  1.0, 0.0
+			1.0, -1.0, 0.0,
+			-1.0, 1.0, 0.0
 		};
+		float normals[18] = {
+			0.0, 0.0, 1.0,
+			0.0, 0.0, 1.0,
+			0.0, 0.0, 1.0,
+			0.0, 0.0, 1.0,
+			0.0, 0.0, 1.0,
+			0.0, 0.0, 1.0
+		};
+
 		Geometry geom = Geometry();
 		geom.setVertices(vector<float>(vertices,vertices+18));
+		geom.setNormals(vector<float>(normals,normals+18));
 		return geom;
 	}
 
