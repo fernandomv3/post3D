@@ -157,6 +157,6 @@ Euler& Euler::setQuaternion(std::shared_ptr<Quaternion> q){
 }
 
 float clamp(float num){
-  return min(max(num,-1.0f),1.0f);
+  return fmin(fmax(num,-1.0f),1.0f);
 }
 }
