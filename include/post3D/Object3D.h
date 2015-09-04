@@ -5,42 +5,42 @@
 #include "post3D/Quaternion.h"
 #include "post3D/Euler.h"
 #include <memory>
-using namespace std;
+
 using namespace math3D;
 namespace object3D{
-	class Object3D{
-	private:
-		shared_ptr<Vec3> position;
-		shared_ptr<Euler> rotation;
-		shared_ptr<Quaternion> quaternion;
-		shared_ptr<Vec3> scale;
-		shared_ptr<Mat4> modelMatrix;
-		bool visible;
-		weak_ptr<Object3D> parent;
-		float distanceToCamera;
-	public:
-		Object3D();
-		Object3D(const Object3D& object);
-		Object3D(Object3D&& object);
-		Object3D& operator=(const Object3D& object);
-		Object3D& operator=(Object3D&& object);
-		virtual ~Object3D()=default;
-		shared_ptr<Vec3> getPosition()const;
-		shared_ptr<Euler> getRotation()const;
-		shared_ptr<Vec3> getScale()const;
-		Object3D& setPosition(shared_ptr<Vec3> position);
-		Object3D& setRotation(shared_ptr<Euler> rotation);
-		Object3D& setScale(shared_ptr<Vec3> scale);
-		shared_ptr<Mat4> getModelMatrix()const;
-		Object3D& updateModelMatrix();
-		Object3D& setQuaternion(shared_ptr<Quaternion> quaternion);
-		shared_ptr<Quaternion> getQuaternion();
-		bool getVisible()const;
-		Object3D& setVisible(bool visible);
-		shared_ptr<Object3D> getParent()const;
-		Object3D& setParent(shared_ptr<Object3D> parent);
-		float getDistanceToCamera()const;
-		Object3D& setDistanceToCamera(float distanceToCamera);
-	};
+class Object3D{
+private:
+  std::shared_ptr<Vec3> position;
+  std::shared_ptr<Euler> rotation;
+  std::shared_ptr<Quaternion> quaternion;
+  std::shared_ptr<Vec3> scale;
+  std::shared_ptr<Mat4> modelMatrix;
+  bool visible;
+  std::weak_ptr<Object3D> parent;
+  float distanceToCamera;
+public:
+  Object3D();
+  Object3D(const Object3D& object);
+  Object3D(Object3D&& object);
+  Object3D& operator=(const Object3D& object);
+  Object3D& operator=(Object3D&& object);
+  virtual ~Object3D()=default;
+  std::shared_ptr<Vec3> getPosition()const;
+  std::shared_ptr<Euler> getRotation()const;
+  std::shared_ptr<Vec3> getScale()const;
+  Object3D& setPosition(std::shared_ptr<Vec3> position);
+  Object3D& setRotation(std::shared_ptr<Euler> rotation);
+  Object3D& setScale(std::shared_ptr<Vec3> scale);
+  std::shared_ptr<Mat4> getModelMatrix()const;
+  Object3D& updateModelMatrix();
+  Object3D& setQuaternion(std::shared_ptr<Quaternion> quaternion);
+  std::shared_ptr<Quaternion> getQuaternion();
+  bool getVisible()const;
+  Object3D& setVisible(bool visible);
+  std::shared_ptr<Object3D> getParent()const;
+  Object3D& setParent(std::shared_ptr<Object3D> parent);
+  float getDistanceToCamera()const;
+  Object3D& setDistanceToCamera(float distanceToCamera);
+};
 }
 #endif
