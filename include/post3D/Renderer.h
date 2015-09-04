@@ -9,11 +9,21 @@
 #include "post3D/Mat4.h"
 #include <GL/glew.h>
 #include <memory>
+#include <unordered_map>
 
 using namespace scene;
 using namespace math3D;
 using namespace object3D;
 using namespace std;
+
+struct attribute{
+	int buffer;
+	int location;
+	std::string type;
+	void* data;
+};
+
+typedef struct attribute Attribute;
 
 namespace render{
 class Renderer{
@@ -22,6 +32,7 @@ private:
 	unique_ptr<Framebuffer> fb;
 	unique_ptr<ShadowMapFramebuffer> shadowMap;
 	unique_ptr<GBuffer> gBuffer;
+	std::unordered_map<std::string,std::unordered_map<std::string,Attribute>> buffers;
 	bool renderShadows;
 	bool softShadows;
 	bool deferred;

@@ -387,6 +387,7 @@ Renderer& Renderer::initializeGeometryBuffers(Geometry& geom){
       (void*)&geom.getVertices().front(),
       geom.getVertices().size() * sizeof(GLfloat)
     );
+    this->buffers[geom.getUUID()]["vertex"].buffer = buf;
     geom.setVertexBuffer(buf);
   }
 
@@ -396,6 +397,7 @@ Renderer& Renderer::initializeGeometryBuffers(Geometry& geom){
       (void*)&geom.getElements().front(),
       geom.getElements().size() * sizeof(GLushort)
     );
+    this->buffers[geom.getUUID()]["index"].buffer = buf;
     geom.setElementBuffer(buf);
   }
 
@@ -405,6 +407,7 @@ Renderer& Renderer::initializeGeometryBuffers(Geometry& geom){
       (void*)&geom.getNormals().front(),
       geom.getNormals().size() * sizeof(GLfloat)
     );
+    this->buffers[geom.getUUID()]["normal"].buffer = buf;
     geom.setNormalBuffer(buf);
   }
   if(!geom.getTexCoordBuffer() && !geom.getTexCoords().empty()){
@@ -413,6 +416,7 @@ Renderer& Renderer::initializeGeometryBuffers(Geometry& geom){
       (void*)&geom.getTexCoords().front(),
       geom.getTexCoords().size() * sizeof(GLfloat)
     );
+    this->buffers[geom.getUUID()]["uv"].buffer = buf;
     geom.setTexCoordBuffer(buf);
   }
 
@@ -422,6 +426,7 @@ Renderer& Renderer::initializeGeometryBuffers(Geometry& geom){
       (void*)&geom.getTangents().front(),
       geom.getTangents().size() * sizeof(GLfloat)
     );
+    this->buffers[geom.getUUID()]["tangent"].buffer = buf;
     geom.setTangentBuffer(buf);
   }
 

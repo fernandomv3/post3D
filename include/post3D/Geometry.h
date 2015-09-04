@@ -3,11 +3,14 @@
 
 #include <vector>
 #include <string>
+#include "sole/sole.hpp"
 
 namespace object3D{
 class Geometry{
 private:
   //use vectors instead of shared_ptr
+  std::string uuid;
+
   std::vector<float> vertices;
   std::vector<int> elements;
   std::vector<float> normals;
@@ -29,6 +32,8 @@ public:
   Geometry& operator=(const Geometry& geom)=delete;
   Geometry& operator=(Geometry&& geom)=default;
   ~Geometry();
+
+  std::string getUUID()const;
 
   const std::vector<float>& getVertices()const;
   const std::vector<int>& getElements()const;

@@ -1,4 +1,5 @@
-﻿#include "post3D/Geometry.h"
+﻿#include <string>
+#include "post3D/Geometry.h"
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
 #include "assimp/mesh.h"
@@ -8,8 +9,8 @@
 
 namespace object3D{
 Geometry::Geometry(){
-
   //zero means not created?
+  this->uuid = sole::uuid1().str();
   this->vertexBuffer = 0;
   this->elementBuffer = 0;
   this->normalBuffer = 0;
@@ -53,6 +54,11 @@ Geometry& Geometry::operator=(Geometry&& geom){
 
 }
 */
+
+std::string Geometry::getUUID()const{
+  return this->uuid;
+}
+
 const std::vector<float>& Geometry::getVertices()const{
   return this->vertices;
 }
