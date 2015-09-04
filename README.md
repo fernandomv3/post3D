@@ -10,6 +10,8 @@
 ## 1. INTRODUCTION
 
 This project aims to develop a game engine using modern OpenGL (>= 3.3), and using features from c++11 like, move semantics, STL containers and smart pointers.
+
+NOTICE: I am currently refactoring a lot of code to make the engine more mantainable and to add new features (Physically based renderer and materials possibly). This master branch stays as legacy code and the new engine will be in a branch called v2, expect many changes and lots of bugs.
  
 ## 2. PREREQUISITES
 
