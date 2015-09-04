@@ -156,7 +156,7 @@ bool Vec3::insideUnitCube()const{
 }
 
 std::unique_ptr<float[]> Vec3::getAsArray()const{
-  unique_ptr<float[]> vec{new float[4]};
+  std::unique_ptr<float[]> vec{new float[4]};
   vec[0] = this->x;
   vec[1] = this->y;
   vec[2] = this->z;
