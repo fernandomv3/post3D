@@ -1,7 +1,6 @@
 ﻿#ifndef COLOR_H
 #define COLOR_H
 #include <memory>
-using namespace std;
 namespace math3D{
 /** 
  *  Represents a RGBA color.
@@ -105,7 +104,7 @@ public:
    * C array of float values wrapped in a std::unique_ptr for resource managment.
    * @return Returns a C array of floats wrapped in std::unique_ptr<float[]>.
    */
-  unique_ptr<float[]> getAsArray() const;
+  std::unique_ptr<float[]> getAsArray() const;
   /**
    * Get a specific channel.
    * Gets a float value between 0.0f and 1.0f from a specific channel.
