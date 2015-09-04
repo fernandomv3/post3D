@@ -626,7 +626,7 @@ Renderer& Renderer::geometryPassRender(Scene& scene){
       this->initializeGeometryBuffers(*mesh->getGeometry());
 
     if(!mesh->getMaterial()->getProgram())
-      mesh->getMaterial()->makePrograms(scene);
+      mesh->getMaterial()->makePrograms(scene,true);
 
     this->setUpVertexAttributes(*mesh->getGeometry(),*mesh->getMaterial()->getProgram());
 

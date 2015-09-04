@@ -167,12 +167,6 @@ void DirectionalLightMaterial::makePrograms(const Scene& scene, bool deferred){
 	this->program->setProgram(prog);
 	this->getProgram()->setAttrPosition(1);
 	glBindAttribLocation(prog,1,"position");
-	this->getProgram()->setAttrNormal(0);
-	glBindAttribLocation(prog,0,"normal");
-	this->getProgram()->setAttrUV(2);
-	glBindAttribLocation(prog,2,"uv");
-	this->getProgram()->setAttrTangent(3);
-	glBindAttribLocation(prog,3,"tangent");
 	this->getProgram()->getUniforms()->unifModelMatrix = glGetUniformLocation(prog,"modelMatrix");
 	this->getProgram()->getUniforms()->unifDiffuseColor = glGetUniformLocation(prog,"material.diffuseColor");
 	this->getProgram()->getUniforms()->unifSpecularColor = glGetUniformLocation(prog,"material.specularColor");
