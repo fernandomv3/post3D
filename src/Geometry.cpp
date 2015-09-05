@@ -11,11 +11,6 @@ namespace object3D{
 Geometry::Geometry(){
   //zero means not created?
   this->uuid = sole::uuid1().str();
-  this->vertexBuffer = 0;
-  this->elementBuffer = 0;
-  this->normalBuffer = 0;
-  this->texCoordBuffer = 0;
-  this->tangentBuffer = 0;
 
   this->initialized = false;
 
@@ -28,14 +23,7 @@ Geometry::Geometry(){
 }
 
 Geometry::~Geometry(){
-  int buffers[5] = {
-    this->vertexBuffer,
-    this->elementBuffer,
-    this->normalBuffer,
-    this->texCoordBuffer,
-    this->tangentBuffer
-  };
-  glDeleteBuffers(5,(GLuint*)(&buffers));
+  
 }
 /*
 Geometry::Geometry(const Geometry& geom){
@@ -125,52 +113,6 @@ bool Geometry::isInitialized()const{
 
 Geometry& Geometry::setInitialized(bool initialized){
   this->initialized = initialized;
-  return *this;
-}
-
-
-int Geometry::getVertexBuffer()const{
-  return this->vertexBuffer;
-}
-
-int Geometry::getElementBuffer()const{
-  return this->elementBuffer;
-}
-
-int Geometry::getNormalBuffer()const{
-  return this->normalBuffer;
-}
-
-int Geometry::getTexCoordBuffer()const{
-  return this->texCoordBuffer;
-}
-
-int Geometry::getTangentBuffer()const{
-  return this->tangentBuffer;
-}
-
-Geometry& Geometry::setVertexBuffer(int vertexBuffer){
-  this->vertexBuffer = vertexBuffer;
-  return *this;
-}
-
-Geometry& Geometry::setElementBuffer(int elementBuffer){
-  this->elementBuffer = elementBuffer;
-  return *this;
-}
-
-Geometry& Geometry::setNormalBuffer(int normalBuffer){
-  this->normalBuffer = normalBuffer;
-  return *this;
-}
-
-Geometry& Geometry::setTexCoordBuffer(int texCoordBuffer){
-  this->texCoordBuffer = texCoordBuffer;
-  return *this;
-}
-
-Geometry& Geometry::setTangentBuffer(int tangentBuffer){
-  this->tangentBuffer = tangentBuffer;
   return *this;
 }
 

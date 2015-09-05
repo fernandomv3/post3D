@@ -18,12 +18,6 @@ private:
   std::vector<float> tangents;
   std::vector<float> bitangents;
 
-  int vertexBuffer;
-  int elementBuffer;
-  int normalBuffer;
-  int texCoordBuffer;
-  int tangentBuffer;
-
   bool initialized;
 public:
   Geometry();
@@ -51,18 +45,7 @@ public:
   Geometry& setTexCoords(std::vector<float> texCoords);
   Geometry& setTangents(std::vector<float> tangents);
   Geometry& setBitangents(std::vector<float> bitangents);
-
-  int getVertexBuffer()const;
-  int getElementBuffer()const;
-  int getNormalBuffer()const;
-  int getTexCoordBuffer()const;
-  int getTangentBuffer()const;
-
-  Geometry& setVertexBuffer(int vertexBuffer);
-  Geometry& setElementBuffer(int elementBuffer);
-  Geometry& setNormalBuffer(int normalBuffer);
-  Geometry& setTexCoordBuffer(int texCoordsBuffer);
-  Geometry& setTangentBuffer(int tangentBuffer);
+  
   friend Geometry loadDataFromFile(std::string filename);
 };
 Geometry loadDataFromFile(std::string filename);
