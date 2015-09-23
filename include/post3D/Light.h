@@ -5,11 +5,10 @@
 #include <memory>
 
 using namespace std;
-using namespace math3D;
 using namespace object3D;
 
 namespace light{
-class Light : public Mesh {
+class Light : public Object3D {
 private:
 	shared_ptr<Color> color;
 public:

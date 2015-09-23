@@ -4,26 +4,26 @@ using namespace math3D;
 
 namespace light{
 
-Light::Light():Mesh(){
+Light::Light():Object3D(){
 	this->color = shared_ptr<Color>(new Color());
 }
 
-Light::Light(const Light& light):Mesh(light){
+Light::Light(const Light& light):Object3D(light){
 	this->color = light.color;
 }
 
-Light::Light(Light&& light):Mesh(light){
+Light::Light(Light&& light):Object3D(light){
 	this->color = move(light.color);
 }
 
 Light& Light::operator=(const Light& light){
-	Mesh::operator=(light);
+	Object3D::operator=(light);
 	this->color = light.color;
 	return *this;
 }
 
 Light& Light::operator=(Light&& light){
-	Mesh::operator=(move(light));
+	Object3D::operator=(move(light));
 	this->color = move(light.color);
 	return *this;
 }
@@ -36,14 +36,5 @@ Light& Light::setColor(shared_ptr<Color> color){
 	this->color = color;
 	return *this;
 }
-
-/*shared_ptr<Mesh> Light::getMesh() const{
-	return this->mesh;
-}
-
-Light& Light::setMesh(shared_ptr<Mesh> mesh){
-	this->mesh = mesh;
-	return *this;
-}*/
 
 }
