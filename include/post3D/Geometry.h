@@ -3,7 +3,9 @@
 
 #include <vector>
 #include <string>
-#include "sole/sole.hpp"
+#include "post3D/MathUtils.h"
+
+using namespace math3D;
 
 namespace object3D{
 class Geometry{

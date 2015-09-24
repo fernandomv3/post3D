@@ -10,7 +10,7 @@
 namespace object3D{
 Geometry::Geometry(){
   //zero means not created?
-  this->uuid = sole::uuid1().str();
+  this->uuid = generateUUID();
 
   this->initialized = false;
 

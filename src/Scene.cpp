@@ -72,7 +72,7 @@ Scene& Scene::operator=(Scene&& scene){
   return *this;
 }
 
-const vector<std::shared_ptr<Object3D>>& Scene::getObjects()const{
+const std::vector<std::shared_ptr<Object3D>>& Scene::getObjects()const{
   return this->objects;
 }
 
@@ -110,11 +110,11 @@ Scene& Scene::setCamera(std::shared_ptr<Camera> camera){
 }
 
 
-const vector<std::shared_ptr<DirectionalLight>>& Scene::getDirectionalLights()const{
+const std::vector<std::shared_ptr<DirectionalLight>>& Scene::getDirectionalLights()const{
   return this->directionalLights;
 }
 
-const vector<std::shared_ptr<PointLight>>& Scene::getPointLights()const{
+const std::vector<std::shared_ptr<PointLight>>& Scene::getPointLights()const{
   return this->pointLights;
 }
 
