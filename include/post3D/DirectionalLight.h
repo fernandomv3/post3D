@@ -9,36 +9,36 @@ using namespace scene;
 using namespace object3D;
 using namespace math3D;
 namespace light{
-	struct dirLight{
-		float color[4];
-		float vectorToLight[4];
-		float intensity;
-		float extra[3];
-	};
+struct dirLight{
+  float color[4];
+  float vectorToLight[4];
+  float intensity;
+  float extra[3];
+};
 
-	typedef struct dirLight DirLight;
+typedef struct dirLight DirLight;
 
-	class DirectionalLight : public Light{
-	private:
-		shared_ptr<Object3D> target;
-		float intensity;
-		shared_ptr<Mat4> lightWorldMatrix;
-	public:
-		DirectionalLight();
-		DirectionalLight(const DirectionalLight& dLight);
-		DirectionalLight(DirectionalLight&& dLight);
-		DirectionalLight& operator=(const DirectionalLight& dLight);
-		DirectionalLight& operator=(DirectionalLight&& dLight);
-		~DirectionalLight()=default;
-		shared_ptr<Object3D> getTarget()const;
-		DirectionalLight& setTarget(shared_ptr<Object3D> obj);
-		float getIntensity()const;
-		DirectionalLight& setIntensity(float intensity);
-		unique_ptr<DirLight> getAsStruct(const Camera& camera)const;
-		unique_ptr<float[]> getVectorToLightAsArray(const Camera& camera)const;
-		shared_ptr<Mat4> getLightWorldMatrix() const;
-		DirectionalLight& setLightWorldMatrix(shared_ptr<Mat4> lightWorldMatrix);
-	};
+class DirectionalLight : public Light{
+private:
+  std::shared_ptr<Object3D> target;
+  float intensity;
+  std::shared_ptr<Mat4> lightWorldMatrix;
+public:
+  DirectionalLight();
+  DirectionalLight(const DirectionalLight& dLight);
+  DirectionalLight(DirectionalLight&& dLight);
+  DirectionalLight& operator=(const DirectionalLight& dLight);
+  DirectionalLight& operator=(DirectionalLight&& dLight);
+  ~DirectionalLight()=default;
+  std::shared_ptr<Object3D> getTarget()const;
+  DirectionalLight& setTarget(std::shared_ptr<Object3D> obj);
+  float getIntensity()const;
+  DirectionalLight& setIntensity(float intensity);
+  std::unique_ptr<DirLight> getAsStruct(const Camera& camera)const;
+  std::unique_ptr<float[]> getVectorToLightAsArray(const Camera& camera)const;
+  std::shared_ptr<Mat4> getLightWorldMatrix() const;
+  DirectionalLight& setLightWorldMatrix(std::shared_ptr<Mat4> lightWorldMatrix);
+};
 }
 
 #endif
