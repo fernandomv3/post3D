@@ -9,6 +9,7 @@ using namespace std;
 namespace texture{
 	class Texture{
 	private:
+		string uuid;
 		string sourceFile;
 		int height;
 		int width;
@@ -22,6 +23,7 @@ namespace texture{
 		Texture& operator=(const Texture& texture)=delete;
 		Texture& operator=(Texture&& texture);
 		~Texture();
+		string getUUID()const;
 		Texture& loadFile(const string& src, bool gamma = true);
 		int makeSampler();
 		int createTexture(GLenum target = GL_TEXTURE_2D,int width =0, int height = 0,GLenum innerFormat=GL_SRGB8,GLenum format=GL_SRGB8,char* data = nullptr, GLenum type = GL_UNSIGNED_BYTE);

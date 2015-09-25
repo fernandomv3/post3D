@@ -5,11 +5,13 @@
 #include "post3D/Quaternion.h"
 #include "post3D/Euler.h"
 #include <memory>
+#include <string>
 
 using namespace math3D;
 namespace object3D{
 class Object3D{
 private:
+  std::string uuid;
   std::shared_ptr<Vec3> position;
   std::shared_ptr<Euler> rotation;
   std::shared_ptr<Quaternion> quaternion;
@@ -25,6 +27,7 @@ public:
   Object3D& operator=(const Object3D& object);
   Object3D& operator=(Object3D&& object);
   virtual ~Object3D()=default;
+  std::string getUUID()const;
   std::shared_ptr<Vec3> getPosition()const;
   std::shared_ptr<Euler> getRotation()const;
   std::shared_ptr<Vec3> getScale()const;

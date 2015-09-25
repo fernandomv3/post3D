@@ -1,7 +1,12 @@
 ﻿#include "post3D/Material.h"
+#include "post3D/MathUtils.h"
 #include <sstream>
+
+using namespace math3D;
+
 namespace material{
 	Material::Material(){
+		this->uuid = generateUUID();
 		this->diffuseColor = shared_ptr<Color>(new Color());
 		this->specularColor = shared_ptr<Color>(new Color());
 		this->shininess = 1.0f;
@@ -16,6 +21,7 @@ namespace material{
 	}
 
 	Material::Material(const Material& mat){
+		this->uuid = mat.uuid;
 		this->diffuseColor = mat.diffuseColor;
 		this->specularColor = mat.specularColor;
 		this->shininess = mat.shininess;
@@ -30,6 +36,7 @@ namespace material{
 	}
 
 	Material::Material(Material&& mat){
+		this->uuid = mat.uuid;
 		this->diffuseColor = move(mat.diffuseColor);
 		this->specularColor = move(mat.specularColor);
 		this->shininess = mat.shininess;
@@ -44,6 +51,7 @@ namespace material{
 	}
 
 	Material& Material::operator=(const Material& mat){
+		this->uuid = mat.uuid;
 		this->diffuseColor = mat.diffuseColor;
 		this->specularColor = mat.specularColor;
 		this->shininess = mat.shininess;
@@ -59,6 +67,7 @@ namespace material{
 	}
 
 	Material& Material::operator=(Material&& mat){
+		this->uuid = mat.uuid;
 		this->diffuseColor = move(mat.diffuseColor);
 		this->specularColor = move(mat.specularColor);
 		this->shininess = mat.shininess;
@@ -71,6 +80,10 @@ namespace material{
 		this->specularMap = move(mat.specularMap);
 		this->program = move(mat.program);
 		return *this;
+	}
+
+	string Material::getUUID()const{
+		return this->uuid;
 	}
 
 	shared_ptr<GLProgram> Material::getProgram() const{

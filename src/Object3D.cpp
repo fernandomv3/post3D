@@ -1,7 +1,9 @@
 ﻿#include "post3D/Object3D.h"
+#include "post3D/MathUtils.h"
 
 namespace object3D{
 Object3D::Object3D(){
+  this->uuid = generateUUID();
   this->visible = true;
   this->position = std::shared_ptr<Vec3>(new Vec3(0.0f,0.0f,0.0f));
   this->rotation = std::shared_ptr<Euler>(new Euler(0.0f,0.0f,0.0f,"XYZ"));
@@ -15,6 +17,7 @@ Object3D::Object3D(){
 }
 
 Object3D::Object3D(const Object3D& object){
+  this->uuid = object.uuid;
   this->visible = object.visible;
   this->position = std::shared_ptr<Vec3>(new Vec3(*object.position));
   this->rotation = std::shared_ptr<Euler>(new Euler(*object.rotation));
@@ -26,6 +29,7 @@ Object3D::Object3D(const Object3D& object){
 }
 
 Object3D::Object3D(Object3D&& object){
+  this->uuid = object.uuid;
   this->visible = object.visible;
   this->position = std::move(object.position);
   this->rotation = std::move(object.rotation);
@@ -37,6 +41,7 @@ Object3D::Object3D(Object3D&& object){
 }
 
 Object3D& Object3D::operator=(const Object3D& object){
+  this->uuid = object.uuid; 
   this->visible = object.visible;
   this->position = std::shared_ptr<Vec3>(new Vec3(*object.position));
   this->rotation = std::shared_ptr<Euler>(new Euler(*object.rotation));
@@ -49,6 +54,7 @@ Object3D& Object3D::operator=(const Object3D& object){
 }
 
 Object3D& Object3D::operator=(Object3D&& object){
+  this->uuid = object.uuid;
   this->visible = object.visible;
   this->position = std::move(object.position);
   this->rotation = std::move(object.rotation);
@@ -58,6 +64,10 @@ Object3D& Object3D::operator=(Object3D&& object){
   this->parent = object.parent;
   this->distanceToCamera = object.distanceToCamera;
   return *this;
+}
+
+std::string Object3D::getUUID()const{
+  return this->uuid;
 }
 
 std::shared_ptr<Vec3> Object3D::getPosition()const{

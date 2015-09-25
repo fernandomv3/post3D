@@ -3,9 +3,6 @@
 
 #include <vector>
 #include <string>
-#include "post3D/MathUtils.h"
-
-using namespace math3D;
 
 namespace object3D{
 class Geometry{

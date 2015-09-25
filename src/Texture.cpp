@@ -1,7 +1,12 @@
 ﻿#include "post3D/Texture.h"
+#include "post3D/MathUtils.h"
 #include "SDL2/SDL_image.h"
+
+using namespace math3D;
+
 namespace texture{
 	Texture::Texture(){
+		this->uuid = generateUUID();
 		this->sourceFile = "";
 		this->height = 0;
 		this->width = 0;
@@ -11,6 +16,7 @@ namespace texture{
 	}
 
 	/*Texture::Texture(const Texture& texture){
+		this->uuid = texture.uuid;
 		this->sourceFile = texture.sourceFile;
 		this->height = texture.height;
 		this->width = texture.width;
@@ -23,6 +29,7 @@ namespace texture{
 	}*/
 
 	Texture::Texture(Texture&& texture){
+		this->uuid = texture.uuid;
 		this->sourceFile = texture.sourceFile;
 		this->height = texture.height;
 		this->width = texture.width;
@@ -32,6 +39,7 @@ namespace texture{
 	}
 
 	/*Texture& Texture::operator=(const Texture& texture){
+		this->uuid = texture.uuid;
 		this->sourceFile = texture.sourceFile;
 		this->height = texture.height;
 		this->width = texture.width;
@@ -45,6 +53,7 @@ namespace texture{
 	}*/
 
 	Texture& Texture::operator=(Texture&& texture){
+		this->uuid = texture.uuid;
 		this->sourceFile = texture.sourceFile;
 		this->height = texture.height;
 		this->width = texture.width;
@@ -57,6 +66,10 @@ namespace texture{
 	Texture::~Texture(){
 		glDeleteTextures(1,(GLuint*)&this->texture);
 		glDeleteSamplers(1,(GLuint*)&this->samplerObject);
+	}
+
+	string Texture::getUUID()const{
+		return this->uuid;
 	}
 
 	Texture& Texture::loadFile(const string& src, bool gamma){

@@ -3,6 +3,7 @@
 namespace math3D{
 
 std::string generateUUID(){
+  static const std::string CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
   std::string uuid = std::string(36,' ');
   int rnd = 0;
   int r = 0;
@@ -20,7 +21,8 @@ std::string generateUUID(){
           rnd = 0x2000000 + (std::rand() * 0x1000000) | 0;
       }
       rnd >>= 4;
-      uuid[i] = CHARS[(i == 19) ? ((rnd & 0xf) & 0x3) | 0x8 : rnd & 0xf];
+      r = rnd & 0xf;
+      uuid[i] = CHARS[(i == 19) ? (r & 0x3) | 0x8 : r];
     }
   }
   return uuid;

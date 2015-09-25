@@ -1,11 +1,13 @@
 ﻿#include <string>
 #include "post3D/Geometry.h"
+#include "post3D/MathUtils.h"
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
 #include "assimp/mesh.h"
 #include "assimp/postprocess.h"
 #include "GL/glew.h"
 
+using namespace math3D;
 
 namespace object3D{
 Geometry::Geometry(){

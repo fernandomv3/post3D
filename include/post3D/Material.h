@@ -26,6 +26,7 @@ namespace material{
 
 	class Material{
 	protected:
+		string uuid;
 		shared_ptr<Color> diffuseColor;
 		shared_ptr<Color> specularColor;
 		float shininess;
@@ -44,6 +45,7 @@ namespace material{
 		Material& operator=(const Material& mat);
 		Material& operator=(Material&& mat);
 		virtual ~Material()=default;
+		string getUUID()const;
 		shared_ptr<GLProgram> getProgram() const;
 		Material& setProgram(shared_ptr<GLProgram> program);
 		string getVertexShaderSource() const;

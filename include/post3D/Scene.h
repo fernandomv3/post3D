@@ -8,6 +8,7 @@
 #include "post3D/Object3D.h"
 #include <memory>
 #include <vector>
+#include <string>
 
 using namespace light;
 using namespace object3D;
@@ -15,6 +16,7 @@ using namespace object3D;
 namespace scene{
 class Scene{
 private:
+  std::string uuid;
   std::shared_ptr<Camera> camera;
   std::shared_ptr<Light> ambientLight;
   std::vector<std::shared_ptr<Object3D>> objects;
@@ -32,6 +34,7 @@ public:
   Scene& operator=(const Scene& scene);
   Scene& operator=(Scene&& scene);
   ~Scene()=default;
+  std::string getUUID()const;
   const std::vector<std::shared_ptr<Object3D>>& getObjects()const;
   Scene& addObject(std::shared_ptr<Object3D> object);
   Scene& removeObject(std::shared_ptr<Object3D> object);

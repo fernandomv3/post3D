@@ -1,10 +1,12 @@
 ﻿#include "post3D/Scene.h"
 #include "post3D/Mat4.h"
+#include "post3D/MathUtils.h"
 #include <algorithm>
 
 namespace scene{
 
 Scene::Scene(){
+  this->uuid = generateUUID();
   this->camera = std::shared_ptr<Camera>(new Camera());
   std::shared_ptr<Mat4> matrix = std::shared_ptr<Mat4>(new Mat4(Mat4::perspectiveMatrix(30.0f, 1280.0f/720.0f, 0.1f, 100.0f)));
   this->camera->setProjectionMatrix(matrix);
@@ -19,6 +21,7 @@ Scene::Scene(){
 }
 
 Scene::Scene(const Scene& scene){
+  this->uuid = scene.uuid;
   this->camera = scene.camera;
   this->ambientLight = scene.ambientLight;
   this->objects = scene.objects;
@@ -32,6 +35,7 @@ Scene::Scene(const Scene& scene){
 }
 
 Scene::Scene(Scene&& scene){
+  this->uuid = scene.uuid;
   this->camera = std::move(scene.camera);
   this->ambientLight = std::move(scene.ambientLight);
   this->objects = std::move(scene.objects);
@@ -45,6 +49,7 @@ Scene::Scene(Scene&& scene){
 }
 
 Scene& Scene::operator=(const Scene& scene){
+  this->uuid = scene.uuid;
   this->camera = scene.camera;
   this->ambientLight = scene.ambientLight;
   this->objects = scene.objects;
@@ -59,6 +64,7 @@ Scene& Scene::operator=(const Scene& scene){
 }
 
 Scene& Scene::operator=(Scene&& scene){
+  this->uuid = scene.uuid;
   this->camera = std::move(scene.camera);
   this->ambientLight = std::move(scene.ambientLight);
   this->objects = std::move(scene.objects);
@@ -70,6 +76,10 @@ Scene& Scene::operator=(Scene&& scene){
   this->usesShadows = scene.usesShadows;
   this->PCFShadows = scene.PCFShadows;
   return *this;
+}
+
+std::string Scene::getUUID()const{
+  return this->uuid;
 }
 
 const std::vector<std::shared_ptr<Object3D>>& Scene::getObjects()const{
