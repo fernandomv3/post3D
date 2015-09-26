@@ -192,7 +192,7 @@ void PhongMaterial::makePrograms(const Scene& scene, bool deferred){
 		scene.getUsesShadows(),
 		scene.getPCFShadows()
 	);
-	//cout << vs << endl << fs << endl;
+	cout << vs << endl << fs << endl;
 	int vertexShader = this->getProgram()->compileShader(GL_VERTEX_SHADER,vs);
 	this->getProgram()->setVertexShader(vertexShader);
 	int fragmentShader = this->getProgram()->compileShader(GL_FRAGMENT_SHADER,fs);

@@ -303,6 +303,43 @@ Renderer& Renderer::setUpObjectUniforms(Uniforms& uniforms, Mesh& mesh){
   return *this;
 }
 
+Renderer& Renderer::initTexture(Texture& texture){
+  int tex, sampler;
+  texture.loadFile();
+  glGenTextures(1,(GLuint*)&tex);
+  glBindTexture(texture.getTarget(),tex);
+  glTexImage2D(
+    texture.getTarget(), 0,           //target, level of detail
+    texture.getInnerFormat(),                    //internal format
+    texture.getWidth(), texture.getHeight(), 0,           //width, height, border
+    texture.getFormat(), texture.getType(),   //external format, type 
+    texture.getImage()                      //pixels
+  );
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_BASE_LEVEL, 0);
+  glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAX_LEVEL, 0);
+  if (texture.getInnerFormat() == GL_DEPTH_COMPONENT){
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+  }
+  
+  
+  glGenSamplers(1,(GLuint*)&sampler);
+  glSamplerParameteri(sampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glSamplerParameteri(sampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glSamplerParameteri(sampler, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glSamplerParameteri(sampler, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+  this->textures[texture.getUUID()].texture = tex;
+  this->textures[texture.getUUID()].sampler = sampler;
+
+  glBindTexture(texture.getTarget(),0);
+  return *this;
+}
+
 Renderer& Renderer::setMaterialUniforms(Uniforms& uniforms, Material& material){
   auto diffuseColor = material.getDiffuseColor()->getAsArray();
   if(uniforms.unifDiffuseColor != -1){
@@ -343,31 +380,25 @@ Renderer& Renderer::setMaterialUniforms(Uniforms& uniforms, Material& material){
   if(uniforms.unifShadowMapSize != -1){
     glUniform2f(uniforms.unifShadowMapSize,this->shadowMap->getWidth(),this->shadowMap->getHeight());
   }
-
+  
   if(material.getMap()){
-    if(!material.getMap()->getTexture() && material.getMap()->getSourceFile() != ""){
-      material.getMap()->loadFile(material.getMap()->getSourceFile(),false);
-    }
+    auto it = this->textures.find(material.getMap()->getUUID());
+    if(it == this->textures.end()) initTexture(*material.getMap());
+    GLTexture tex = this->textures[material.getMap()->getUUID()];
     glActiveTexture(GL_TEXTURE0 + MAP);
-    glBindTexture(GL_TEXTURE_2D, material.getMap()->getTexture());
-    if(!material.getMap()->getSampler()){
-      material.getMap()->setSampler(material.getMap()->makeSampler());
-    }
-    glBindSampler(MAP,material.getMap()->getSampler());
+    glBindTexture(GL_TEXTURE_2D,tex.texture);
+    glBindSampler(MAP,tex.sampler);
   }
 
   if(material.getNormalMap()){
-    if(!material.getNormalMap()->getTexture() && material.getNormalMap()->getSourceFile() != ""){
-      material.getNormalMap()->loadFile(material.getNormalMap()->getSourceFile(),false);
-    }
+    auto it = this->textures.find(material.getNormalMap()->getUUID());
+    if(it == this->textures.end()) initTexture(*material.getNormalMap());
+    GLTexture tex = this->textures[material.getNormalMap()->getUUID()];
     glActiveTexture(GL_TEXTURE0 + NORMALMAP);
-    glBindTexture(GL_TEXTURE_2D, material.getNormalMap()->getTexture());
-    if(!material.getNormalMap()->getSampler()){
-      material.getNormalMap()->setSampler(material.getNormalMap()->makeSampler());
-    }
-    glBindSampler(NORMALMAP,material.getNormalMap()->getSampler());
+    glBindTexture(GL_TEXTURE_2D,tex.texture);
+    glBindSampler(NORMALMAP,tex.sampler);
   }
-
+  
   if(this->shadowMap && this->renderShadows){
     glActiveTexture(GL_TEXTURE0 + SHADOWMAP);
     glBindTexture(GL_TEXTURE_2D,this->shadowMap->getTexture()->getTexture());
@@ -376,7 +407,6 @@ Renderer& Renderer::setMaterialUniforms(Uniforms& uniforms, Material& material){
     }
     glBindSampler(SHADOWMAP,this->shadowMap->getTexture()->getSampler());
   }
-
   return *this;
 }
 

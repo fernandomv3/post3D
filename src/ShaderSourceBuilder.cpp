@@ -98,9 +98,11 @@ ShaderSourceBuilder::ShaderSourceBuilder(){
       "uniform sampler2D shadowMap;\n"
       "#endif\n"},
     {"PCFShadow",
-      "#if defined(SHADOWMAP) && defined(PCFSHADOW)\n"
+      "#ifdef SHADOWMAP\n"
+      "#ifdef PCFSHADOW\n"
       "uniform vec2 shadowMapSize;\n"
       "uniform int sampleSize;\n"
+      "#endif\n"
       "#endif\n"},
     {"screenSize","uniform vec2 screenSize;\n"}
   };
@@ -133,6 +135,7 @@ ShaderSourceBuilder::ShaderSourceBuilder(){
       "}\n"
       "#endif\n"},
     {"PCFShadowFactorFunc",
+      "#ifdef SHADOWMAP\n"
       "#ifdef PCFSHADOW\n"
       "float calculateShadowFactorPCF(in vec4 lightSpacePos){\n"
       "  vec3 projCoords = lightSpacePos.xyz / lightSpacePos.w;\n"
@@ -156,7 +159,8 @@ ShaderSourceBuilder::ShaderSourceBuilder(){
       "  float numSamples = (1 + 2*sampleSize)*(1 + 2*sampleSize);\n"
       "  return 0.5 + (result/numSamples);\n"
       "}\n"
-      "#endif"},
+      "#endif\n"
+      "#endif\n"},
     {"shadowFactorFunc",
       "#ifdef SHADOWMAP\n"
       "float calculateShadowFactor(in vec4 lightSpacePos){\n"
@@ -183,7 +187,7 @@ ShaderSourceBuilder::ShaderSourceBuilder(){
       "  texNormal = normalize(texNormal);\n"
       "  return vec4(texNormal,0.0);\n"
       "}\n"
-      "#endif"},
+      "#endif\n"},
     {"warpFunc",
       "float warp (in float value,in float factor){\n"
       "  return (value + factor ) / (1+ clamp(factor,0,1));\n"
@@ -234,8 +238,10 @@ ShaderSourceBuilder::ShaderSourceBuilder(){
       "  #endif\n"},
     {"initShadowFactor","float shadowFactor = 1.0;\n"},
     {"PFCshadowFactor",
+      "  #ifdef SHADOWMAP\n"
       "  #ifdef PCFSHADOW\n"
       "  shadowFactor = calculateShadowFactorPCF(depthPosition);\n"
+      "  #endif\n"
       "  #endif\n"},
     {"shadowFactor",
       "  #ifdef SHADOWMAP\n"

@@ -5,41 +5,59 @@
 #include <GL/glew.h>
 #include <memory>
 
-using namespace std;
 namespace texture{
-	class Texture{
-	private:
-		string uuid;
-		string sourceFile;
-		int height;
-		int width;
-		int texture;
-		unique_ptr<int[]>image; //use vector
-		int samplerObject;
-	public:
-		Texture();
-		Texture(const Texture& texture)=delete;
-		Texture(Texture&& texture);
-		Texture& operator=(const Texture& texture)=delete;
-		Texture& operator=(Texture&& texture);
-		~Texture();
-		string getUUID()const;
-		Texture& loadFile(const string& src, bool gamma = true);
-		int makeSampler();
-		int createTexture(GLenum target = GL_TEXTURE_2D,int width =0, int height = 0,GLenum innerFormat=GL_SRGB8,GLenum format=GL_SRGB8,char* data = nullptr, GLenum type = GL_UNSIGNED_BYTE);
-		
-		int getHeight()const;
-		int getWidth()const;
-		int getTexture()const;
-		int getSampler()const;
-		string getSourceFile()const;
+class Texture{
+private:
+  std::string uuid;
+  std::string sourceFile;
+  std::unique_ptr<char[]>image;
+  int height;
+  int width;
+  bool gamma;
+  int target;
+  int innerFormat;
+  int format;
+  int type;
 
-		Texture& setHeight(int height);
-		Texture& setWidth(int widht);
-		Texture& setTexture(int texture);
-		Texture& setSampler(int sampler);
-		Texture& setSourceFile(string sourceFile);
+  int texture;
+  int samplerObject;
+public:
+  Texture();
+  Texture(const Texture& texture)=delete;
+  Texture(Texture&& texture);
+  Texture& operator=(const Texture& texture)=delete;
+  Texture& operator=(Texture&& texture);
+  ~Texture();
 
-	};
+  std::string getUUID()const;
+  std::string getSourceFile()const;
+  const char* getImage()const;
+  int getHeight()const;
+  int getWidth()const;
+  bool getGamma()const;
+  int getTarget()const;
+  int getInnerFormat()const;
+  int getFormat()const;
+  int getType()const;
+
+  Texture& setSourceFile(std::string sourceFile);
+  Texture& setHeight(int height);
+  Texture& setWidth(int widht);
+  Texture& setGamma(bool gamma);
+  Texture& setTarget(int target);
+  Texture& setInnerFormat(int innerFormat);
+  Texture& setFormat(int format);
+  Texture& setType(int type);
+
+  Texture& loadFile();
+
+  Texture& loadFile(const std::string& src, bool gamma = true);
+  int makeSampler();
+  int createTexture(GLenum target = GL_TEXTURE_2D,int width =0, int height = 0,GLenum innerFormat=GL_SRGB8,GLenum format=GL_SRGB8,char* data = nullptr, GLenum type = GL_UNSIGNED_BYTE);
+  int getTexture()const;
+  int getSampler()const;
+  Texture& setTexture(int texture);
+  Texture& setSampler(int sampler);
+};
 }
 #endif

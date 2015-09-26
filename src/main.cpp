@@ -202,6 +202,7 @@ int main(int argc, char** argv){
 	renderer = Renderer();
 	//renderer.setRenderShadows(false);
 	//renderer.setSoftShadows(false);
+	//scene1.setUsesShadows(false);
 
 	auto geometry = shared_ptr<Geometry>(new Geometry(loadDataFromFile("share/post3D/robot-low-normal.dae")));
 	auto phongMat = shared_ptr<PhongMaterial>(new PhongMaterial());
@@ -211,6 +212,7 @@ int main(int argc, char** argv){
 
 	auto tex = shared_ptr<Texture>(new Texture());
 	tex->setSourceFile("share/post3D/normalMap.jpg");
+	tex->setGamma(false);
 	phongMat->setNormalMap(tex);
 	
 	robot = shared_ptr<Mesh>(new Mesh(geometry,phongMat));

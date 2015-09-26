@@ -16,16 +16,23 @@ using namespace math3D;
 using namespace object3D;
 using namespace std;
 
+namespace render{
+
 struct attribute{
 	int buffer;
 	int location;
 	std::string type;
 	void* data;
 };
-
 typedef struct attribute Attribute;
 
-namespace render{
+struct gltexture{
+	int texture;
+	int sampler;
+};
+typedef struct gltexture GLTexture;
+
+
 class Renderer{
 private:
 	int vao;
@@ -33,9 +40,11 @@ private:
 	unique_ptr<ShadowMapFramebuffer> shadowMap;
 	unique_ptr<GBuffer> gBuffer;
 	std::unordered_map<std::string,std::unordered_map<std::string,Attribute>> buffers;
+	std::unordered_map<std::string,GLTexture> textures;
 	bool renderShadows;
 	bool softShadows;
 	bool deferred;
+	Renderer& initTexture(Texture& texture);
 	Renderer& activateGBuffer();
 	Renderer& deactivateGBuffer();
 	Renderer& activateFramebuffer();
