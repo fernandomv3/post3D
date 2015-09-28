@@ -173,23 +173,23 @@ int GLProgram::linkProgram(int vertexShader, int fragmentShader){
   glLinkProgram(program);
   glGetProgramiv(program, GL_LINK_STATUS, &programOk);
   glValidateProgram(program);
-    glGetProgramiv(program, GL_VALIDATE_STATUS, &programValid);
-    if (!programOk || !programValid) {
-      int maxLength = 0;
-      std::cerr << "Failed to link shader program:"<< std::endl;
-      glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);
-      auto infoLog = std::unique_ptr<char[]>(new char[maxLength]);
-      glGetProgramInfoLog(program, maxLength, &maxLength, &infoLog[0]);
-      std::string ilog = std::string(infoLog.get());
-      std::cerr << ilog << std::endl;
-      glDeleteProgram(program);
-      glDeleteShader(vertexShader);
-      glDeleteShader(fragmentShader);
-      return 0;
-    }
-    glDetachShader(program,vertexShader);
-    glDetachShader(program,vertexShader);
-    return program;
+  glGetProgramiv(program, GL_VALIDATE_STATUS, &programValid);
+  if (!programOk || !programValid) {
+    int maxLength = 0;
+    std::cerr << "Failed to link shader program:"<< std::endl;
+    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);
+    auto infoLog = std::unique_ptr<char[]>(new char[maxLength]);
+    glGetProgramInfoLog(program, maxLength, &maxLength, &infoLog[0]);
+    std::string ilog = std::string(infoLog.get());
+    std::cerr << ilog << std::endl;
+    glDeleteProgram(program);
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+    return 0;
+  }
+  glDetachShader(program,vertexShader);
+  glDetachShader(program,vertexShader);
+  return program;
 }
 
 const std::unordered_map<std::string,Uniform>& GLProgram::getpUniforms(){
