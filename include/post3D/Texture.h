@@ -29,8 +29,8 @@ public:
   Texture& operator=(Texture&& texture);
   ~Texture();
 
-  std::string getUUID()const;
-  std::string getSourceFile()const;
+  const std::string& getUUID()const;
+  const std::string& getSourceFile()const;
   const char* getImage()const;
   int getHeight()const;
   int getWidth()const;

@@ -88,11 +88,11 @@ Texture& Texture::operator=(Texture&& texture){
 Texture::~Texture(){
 }
 
-std::string Texture::getUUID()const{
+const std::string& Texture::getUUID()const{
   return this->uuid;
 }
 
-std::string Texture::getSourceFile()const{
+const std::string& Texture::getSourceFile()const{
   return this->sourceFile;
 }
 
