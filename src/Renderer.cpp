@@ -50,8 +50,10 @@ Renderer& Renderer::setRenderDeferred(bool renderDeferred){
 Renderer& Renderer::activateFramebuffer(){
   if(this->fb){
     if(!this->fb->getFbo()){
-      this->fb->create(true);
-      this->fb->configure();
+      this->initTexture(*this->fb->getTexture());
+      this->fb->create();
+      GLTexture tex = this->textures[this->fb->getTexture()->getUUID()];
+      this->fb->configure(tex.texture);
     }
     this->fb->bindForWriting();
   }
@@ -82,8 +84,10 @@ Renderer& Renderer::deactivateFramebuffer(){
 Renderer& Renderer::activateShadowFramebuffer(){
   if(this->shadowMap){
     if(!this->shadowMap->getFbo()){
-      this->shadowMap->create(false);
-      this->shadowMap->configure(GL_DEPTH_ATTACHMENT);
+      this->initTexture(*this->shadowMap->getTexture());
+      this->shadowMap->create();
+      GLTexture tex = this->textures[this->shadowMap->getTexture()->getUUID()];
+      this->shadowMap->configure(tex.texture);
     }
     this->shadowMap->bindForWriting();
   }
@@ -305,7 +309,7 @@ Renderer& Renderer::setUpObjectUniforms(Uniforms& uniforms, Mesh& mesh){
 
 Renderer& Renderer::initTexture(Texture& texture){
   int tex, sampler;
-  texture.loadFile();
+  if(texture.getSourceFile() != "") texture.loadFile();
   glGenTextures(1,(GLuint*)&tex);
   glBindTexture(texture.getTarget(),tex);
   glTexImage2D(
@@ -400,18 +404,18 @@ Renderer& Renderer::setMaterialUniforms(Uniforms& uniforms, Material& material){
   }
   
   if(this->shadowMap && this->renderShadows){
-    /*auto it = this->textures.find(this->shadowMap->getTexture()->getUUID());
+    auto it = this->textures.find(this->shadowMap->getTexture()->getUUID());
     if(it == this->textures.end()) initTexture(*this->shadowMap->getTexture());
     glActiveTexture(GL_TEXTURE0 + SHADOWMAP);
-    GLTexture tex = this->textures[material.getNormalMap()->getUUID()];
+    GLTexture tex = this->textures[this->shadowMap->getTexture()->getUUID()];
     glBindTexture(GL_TEXTURE_2D,tex.texture);
-    glBindSampler(SHADOWMAP,tex.sampler);*/
-    glActiveTexture(GL_TEXTURE0 + SHADOWMAP);
+    glBindSampler(SHADOWMAP,tex.sampler);
+    /*glActiveTexture(GL_TEXTURE0 + SHADOWMAP);
     glBindTexture(GL_TEXTURE_2D,this->shadowMap->getTexture()->getTexture());
     if(!this->shadowMap->getTexture()->getSampler()){
       this->shadowMap->getTexture()->setSampler(this->shadowMap->getTexture()->makeSampler());
     }
-    glBindSampler(SHADOWMAP,this->shadowMap->getTexture()->getSampler());
+    glBindSampler(SHADOWMAP,this->shadowMap->getTexture()->getSampler());*/
   }
   return *this;
 }

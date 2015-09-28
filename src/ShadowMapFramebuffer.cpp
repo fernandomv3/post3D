@@ -8,11 +8,16 @@ ShadowMapFramebuffer::ShadowMapFramebuffer():Framebuffer(){
   this->getTexture()->setFormat(GL_DEPTH_COMPONENT);
   this->getTexture()->setInnerFormat(GL_DEPTH_COMPONENT);
   this->setHasDepth(false);
+  this->setFboType(GL_DEPTH_ATTACHMENT);
 }
 
 ShadowMapFramebuffer::ShadowMapFramebuffer(int width, int height):Framebuffer(width,height){
   this->material = shared_ptr<DepthMaterial>(new DepthMaterial());
   this->sampleSize = 1;
+  this->getTexture()->setFormat(GL_DEPTH_COMPONENT);
+  this->getTexture()->setInnerFormat(GL_DEPTH_COMPONENT);
+  this->setHasDepth(false);
+  this->setFboType(GL_DEPTH_ATTACHMENT);
 }
 
 /*ShadowMapFramebuffer::ShadowMapFramebuffer(const ShadowMapFramebuffer& smfb):Framebuffer(smfb){

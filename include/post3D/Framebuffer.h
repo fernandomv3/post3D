@@ -38,12 +38,11 @@ public:
   Framebuffer& setHeight(int height);
   Framebuffer& setFboType(int fboType);
   Framebuffer& setHasDepth(bool hasDepth);
-  virtual Framebuffer& create(bool depth);
-  virtual bool configure(GLenum fboType = GL_COLOR_ATTACHMENT0);
+  Framebuffer& create();
+  bool configure(int texture);
   Framebuffer& bindForWriting();
-  Framebuffer& bindForReading(int textureUnit);
   Framebuffer& deactivate();
-  Framebuffer& createDepthBuffer(int width, int height);
+  Framebuffer& createDepthBuffer();
 };
 }
 

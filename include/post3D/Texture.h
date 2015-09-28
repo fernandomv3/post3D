@@ -18,9 +18,6 @@ private:
   int innerFormat;
   int format;
   int type;
-
-  int texture;
-  int samplerObject;
 public:
   Texture();
   Texture(const Texture& texture)=delete;
@@ -50,14 +47,6 @@ public:
   Texture& setType(int type);
 
   Texture& loadFile();
-
-  Texture& loadFile(const std::string& src, bool gamma = true);
-  int makeSampler();
-  int createTexture(GLenum target = GL_TEXTURE_2D,int width =0, int height = 0,GLenum innerFormat=GL_SRGB8,GLenum format=GL_SRGB8,char* data = nullptr, GLenum type = GL_UNSIGNED_BYTE);
-  int getTexture()const;
-  int getSampler()const;
-  Texture& setTexture(int texture);
-  Texture& setSampler(int sampler);
 };
 }
 #endif

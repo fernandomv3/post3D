@@ -84,7 +84,7 @@ GBuffer& GBuffer::setDepthTexture(shared_ptr<Texture> depthTexture){
 }
 
 GBuffer& GBuffer::create(){
-  glGenFramebuffers(1,(GLuint*)&(this->fbo));
+  /*glGenFramebuffers(1,(GLuint*)&(this->fbo));
   glBindFramebuffer(GL_FRAMEBUFFER,this->fbo);
   for(int i=0; i<4;i++){
     auto tex = shared_ptr<Texture>(new Texture());
@@ -107,11 +107,11 @@ GBuffer& GBuffer::create(){
     GL_DEPTH_COMPONENT,
     GL_DEPTH_COMPONENT,
     nullptr
-  ));
+  ));*/
   return *this;
 }
 
-GBuffer& GBuffer::configure(){
+GBuffer& GBuffer::configure(){/*
   for(int i =0; i<4;i++){
     glBindTexture(GL_TEXTURE_2D,this->textures[i]->getTexture());
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -138,7 +138,7 @@ GBuffer& GBuffer::configure(){
     cout << "Framebuffer not created correctly" << endl;
   }
   glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-  return *this;
+  */return *this;
 }
 
 GBuffer& GBuffer::bindForWriting(){
@@ -149,10 +149,10 @@ GBuffer& GBuffer::bindForWriting(){
 
 GBuffer& GBuffer::bindForReading(){
   glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);/*Sets the default framebuffer*/
-  for(int i = 0; i< 4;i++){
+  /*for(int i = 0; i< 4;i++){
     glActiveTexture(GL_TEXTURE0 + i);
     glBindTexture(GL_TEXTURE_2D,this->textures[i]->getTexture());
-  }
+  }*/
   return *this;
 }
 

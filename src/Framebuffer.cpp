@@ -134,36 +134,28 @@ Framebuffer& Framebuffer::setHasDepth(bool hasDepth){
   return *this;
 }
 
-Framebuffer& Framebuffer::create(bool depth){
-  this->texture->setTexture(this->texture->createTexture(
-    GL_TEXTURE_2D,
-    this->width,
-    this->height,
-    GL_SRGB8,
-    GL_SRGB8,
-    nullptr
-  ));
+Framebuffer& Framebuffer::create(){
   glGenFramebuffers(1,(GLuint*)&(this->fbo));
   glBindFramebuffer(GL_FRAMEBUFFER,this->fbo);
   if(this->hasDepth){
-    this->createDepthBuffer(this->width,this->height);
+    this->createDepthBuffer();
   }
   return *this;
 }
 
-bool Framebuffer::configure(GLenum fboType){
+bool Framebuffer::configure(int texture){
   glFramebufferTexture2D(
     GL_FRAMEBUFFER,
     this->fboType,
     this->texture->getTarget(),
-    this->texture->getTexture(),
+    texture,
     0
   );
   if(this->fboType == GL_DEPTH_ATTACHMENT){
     glDrawBuffer(GL_NONE);
     glReadBuffer(GL_NONE);
   }
-  
+
   if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE){
     cout << "Framebuffer not created correctly" << endl;
     return false;
@@ -177,19 +169,13 @@ Framebuffer& Framebuffer::bindForWriting(){
   return *this;
 }
 
-Framebuffer& Framebuffer::bindForReading(int textureUnit){
-  glActiveTexture(textureUnit);
-  glBindTexture(GL_TEXTURE_2D,this->texture->getTexture());
-  return *this;
-}
-
 Framebuffer& Framebuffer::deactivate(){
   glBindFramebuffer(GL_FRAMEBUFFER,0);
   glViewport(0,0,this->width,this->height);
   return *this;
 }
 
-Framebuffer& Framebuffer::createDepthBuffer(int width, int height){
+Framebuffer& Framebuffer::createDepthBuffer(){
   glGenRenderbuffers(1,(GLuint*)&(this->depthBuffer));
   glBindRenderbuffer(GL_RENDERBUFFER,this->depthBuffer);
   glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH_COMPONENT24,this->width,this->height);
