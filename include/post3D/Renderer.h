@@ -29,6 +29,7 @@ typedef struct attribute Attribute;
 struct gltexture{
 	int texture;
 	int sampler;
+	int binding;
 };
 typedef struct gltexture GLTexture;
 

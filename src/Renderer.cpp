@@ -82,8 +82,8 @@ Renderer& Renderer::deactivateFramebuffer(){
 Renderer& Renderer::activateShadowFramebuffer(){
   if(this->shadowMap){
     if(!this->shadowMap->getFbo()){
-      this->shadowMap->create();
-      this->shadowMap->configure();
+      this->shadowMap->create(false);
+      this->shadowMap->configure(GL_DEPTH_ATTACHMENT);
     }
     this->shadowMap->bindForWriting();
   }
@@ -400,6 +400,12 @@ Renderer& Renderer::setMaterialUniforms(Uniforms& uniforms, Material& material){
   }
   
   if(this->shadowMap && this->renderShadows){
+    /*auto it = this->textures.find(this->shadowMap->getTexture()->getUUID());
+    if(it == this->textures.end()) initTexture(*this->shadowMap->getTexture());
+    glActiveTexture(GL_TEXTURE0 + SHADOWMAP);
+    GLTexture tex = this->textures[material.getNormalMap()->getUUID()];
+    glBindTexture(GL_TEXTURE_2D,tex.texture);
+    glBindSampler(SHADOWMAP,tex.sampler);*/
     glActiveTexture(GL_TEXTURE0 + SHADOWMAP);
     glBindTexture(GL_TEXTURE_2D,this->shadowMap->getTexture()->getTexture());
     if(!this->shadowMap->getTexture()->getSampler()){
