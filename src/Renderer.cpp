@@ -188,44 +188,40 @@ vector<unique_ptr<float[]>> Renderer::calculateGlobalMatrices(Scene& scene){
 
 Renderer& Renderer::setUpGlobalUniforms(GLProgram& prog, Scene& scene, vector<unique_ptr<float[]>> &matrices, Mat4& lightWorldMatrix){
   auto uniforms = prog.getpUniforms();
-  if(uniforms.find("worldMatrix") != uniforms.end()){
-    glUniformMatrix4fv(
-      uniforms["worldMatrix"].location,
-      1,
-      GL_TRUE,
-      matrices[0].get()
-    );
-  }
-  if(uniforms.find("projectionMatrix") != uniforms.end()){
-    glUniformMatrix4fv(
-      uniforms["projectionMatrix"].location,
-      1,
-      GL_TRUE,
-      matrices[1].get()
-    );
-  }
-  if(uniforms.find("depthWorldMatrix") != uniforms.end()){
-    glUniformMatrix4fv(
-      uniforms["depthWorldMatrix"].location,
-      1,
-      GL_TRUE,
-      lightWorldMatrix.getAsArray().get()
-    );
-  }
-  if(uniforms.find("invGamma") != uniforms.end()){
-    GLfloat invGamma = 1/scene.getCamera()->getGamma();
-    glUniform1f(
-      uniforms["invGamma"].location,
-      invGamma
-    );
-  }
-  if(uniforms.find("maxLightIntensity") != uniforms.end()){
-    GLfloat maxLightIntensity = scene.getMaxLightIntensity();
-    glUniform1f(
-      uniforms["maxLightIntensity"].location,
-      maxLightIntensity
-    );
-  }
+
+  glUniformMatrix4fv(
+    uniforms["worldMatrix"].location,
+    1,
+    GL_TRUE,
+    matrices[0].get()
+  );
+
+  glUniformMatrix4fv(
+    uniforms["projectionMatrix"].location,
+    1,
+    GL_TRUE,
+    matrices[1].get()
+  );
+
+  glUniformMatrix4fv(
+    uniforms["depthWorldMatrix"].location,
+    1,
+    GL_TRUE,
+    lightWorldMatrix.getAsArray().get()
+  );
+
+  GLfloat invGamma = 1/scene.getCamera()->getGamma();
+  glUniform1f(
+    uniforms["invGamma"].location,
+    invGamma
+  );
+
+  GLfloat maxLightIntensity = scene.getMaxLightIntensity();
+  glUniform1f(
+    uniforms["maxLightIntensity"].location,
+    maxLightIntensity
+  );
+
   return *this;
 }
 
@@ -233,27 +229,22 @@ Renderer& Renderer::setUpDirectionalLightsUniforms(GLProgram& prog,Scene& scene,
   auto uniforms = prog.getpUniforms();
   int numDirLights = scene.getDirectionalLights().size();
   if(numDirLights > 0){
-    if(uniforms.find("dirLightColor") != uniforms.end()){
-      glUniform4fv(
-        uniforms["dirLightColor"].location,
-        numDirLights,
-        dlightData[1].get()
-      );
-    }
-    if(uniforms.find("dirLightVectorToLight") != uniforms.end()){
-      glUniform4fv(
-        uniforms["dirLightVectorToLight"].location,
-        numDirLights,
-        dlightData[0].get()
-      );
-    }
-    if(uniforms.find("dirLightIntensity") != uniforms.end()){
-      glUniform1fv(
-        uniforms["dirLightIntensity"].location,
-        numDirLights,
-        dlightData[2].get()
-      );
-    }
+    glUniform4fv(
+      uniforms["dirLightColor"].location,
+      numDirLights,
+      dlightData[1].get()
+    );
+    glUniform4fv(
+      uniforms["dirLightVectorToLight"].location,
+      numDirLights,
+      dlightData[0].get()
+    );
+    glUniform1fv(
+      uniforms["dirLightIntensity"].location,
+      numDirLights,
+      dlightData[2].get()
+    );
+
   }
   return *this;
 }
@@ -261,7 +252,7 @@ Renderer& Renderer::setUpDirectionalLightsUniforms(GLProgram& prog,Scene& scene,
 Renderer& Renderer::setUpPointLightsUniforms(GLProgram& prog,Scene& scene,vector<unique_ptr<float[]>>& plightData){
   auto uniforms = prog.getpUniforms();
   int numPLights = scene.getPointLights().size();
-  if(numPLights > 0 && uniforms.find("pointLightColor") != uniforms.end()){
+  if(numPLights > 0){
     glUniform4fv(
       uniforms["pointLightColor"].location,
       numPLights,
@@ -288,27 +279,23 @@ Renderer& Renderer::setUpPointLightsUniforms(GLProgram& prog,Scene& scene,vector
 
 Renderer& Renderer::setUpAmbientLightUniforms(GLProgram& prog,Scene& scene,Light& ambLight){
   auto uniforms = prog.getpUniforms();
-  if(uniforms.find("ambientLight") != uniforms.end()){
-    glUniform4fv(
-      uniforms["ambientLight"].location,
-      1,
-      scene.getAmbientLight()->getColor()->getAsArray().get()
-    );
-  }
+  glUniform4fv(
+    uniforms["ambientLight"].location,
+    1,
+    scene.getAmbientLight()->getColor()->getAsArray().get()
+  );
   return *this;
 }
 
 Renderer& Renderer::setUpObjectUniforms(GLProgram& prog, Mesh& mesh){
   auto uniforms = prog.getpUniforms();
   mesh.updateModelMatrix();
-  if(uniforms.find("modelMatrix") != uniforms.end()){
-    glUniformMatrix4fv(
-      uniforms["modelMatrix"].location,
-      1,
-      GL_TRUE,
-      mesh.getModelMatrix()->getAsArray().get()
-    );
-  }
+  glUniformMatrix4fv(
+    uniforms["modelMatrix"].location,
+    1,
+    GL_TRUE,
+    mesh.getModelMatrix()->getAsArray().get()
+  );
   return *this;
 }
 
@@ -351,45 +338,37 @@ Renderer& Renderer::initTexture(Texture& texture){
 
 Renderer& Renderer::setMaterialUniforms(GLProgram& prog, Material& material){
   auto uniforms = prog.getpUniforms();
+  
   auto diffuseColor = material.getDiffuseColor()->getAsArray();
-  if(uniforms.find("diffuseColor") != uniforms.end()){
-    glUniform4fv(
-      uniforms["diffuseColor"].location,
-      1,
-      diffuseColor.get()
-    );
-  }
+  glUniform4fv(
+    uniforms["diffuseColor"].location,
+    1,
+    diffuseColor.get()
+  );
+
   auto specularColor = material.getSpecularColor()->getAsArray();
-  if(uniforms.find("specularColor") != uniforms.end()){
-    glUniform4fv(
-      uniforms["specularColor"].location,
-      1,
-      specularColor.get()
-    );
-  }
+  glUniform4fv(
+    uniforms["specularColor"].location,
+    1,
+    specularColor.get()
+  );
+
   float shininess = material.getShininess();
-  if(uniforms.find("shininess") != uniforms.end()){
-    glUniform1fv(
-      uniforms["shininess"].location,
-      1,
-      &shininess
-    );
-  }
-  if(uniforms.find("mapSampler") != uniforms.end()){
-    glUniform1i(uniforms["mapSampler"].location,MAP);
-  }
-  if(uniforms.find("normalMapSampler") != uniforms.end()){
-    glUniform1i(uniforms["normalMapSampler"].location,NORMALMAP);
-  }
-  if(uniforms.find("shadowMapSampler") != uniforms.end()){
-    glUniform1i(uniforms["shadowMapSampler"].location,SHADOWMAP);
-  }
-  if(uniforms.find("sampleSize") != uniforms.end()){
-    glUniform1i(uniforms["sampleSize"].location,this->shadowMap->getSampleSize());
-  }
-  if(uniforms.find("shadowMapSize") != uniforms.end()){
-    glUniform2f(uniforms["shadowMapSize"].location,this->shadowMap->getWidth(),this->shadowMap->getHeight());
-  }
+  glUniform1fv(
+    uniforms["shininess"].location,
+    1,
+    &shininess
+  );
+
+  glUniform1i(uniforms["mapSampler"].location,MAP);
+
+  glUniform1i(uniforms["normalMapSampler"].location,NORMALMAP);
+
+  glUniform1i(uniforms["shadowMapSampler"].location,SHADOWMAP);
+
+  glUniform1i(uniforms["sampleSize"].location,this->shadowMap->getSampleSize());
+
+  glUniform2f(uniforms["shadowMapSize"].location,this->shadowMap->getWidth(),this->shadowMap->getHeight());
   
   if(material.getMap()){
     auto it = this->textures.find(material.getMap()->getUUID());
