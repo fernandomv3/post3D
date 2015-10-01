@@ -60,10 +60,12 @@ public:
   GLProgram& setAttrNormal(int attrNormal);
   std::string getSourceFromFile(std::string filename);
   int compileShader(GLenum type, std::string source);
+  int compileShader(Shader& shader);
   int linkProgram(int vertexShader, int fragmentShader);
   std::unordered_map<std::string,Uniform>& getpUniforms();
   const std::vector<Shader>& getShaders();
   //int linkProgramTessellation(int vertexShader, int fragmentShader, int tessControlShader, int tessEvaluationShader);
+  int makeProgram();
   ~GLProgram();
   GLProgram& addUniform(std::string name, std::string type, void* value);
 };
