@@ -12,7 +12,7 @@ namespace material{
 struct uniform{
   std::string name;
   std::string type;
-  int location;
+  int location = -1;
   void* value;
 };
 typedef struct uniform Uniform;
