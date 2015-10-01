@@ -195,27 +195,23 @@ Renderer& Renderer::setUpGlobalUniforms(GLProgram& prog, Scene& scene, vector<un
     GL_TRUE,
     matrices[0].get()
   );
-
   glUniformMatrix4fv(
     uniforms["projectionMatrix"].location,
     1,
     GL_TRUE,
     matrices[1].get()
   );
-
   glUniformMatrix4fv(
     uniforms["depthWorldMatrix"].location,
     1,
     GL_TRUE,
     lightWorldMatrix.getAsArray().get()
   );
-
   GLfloat invGamma = 1/scene.getCamera()->getGamma();
   glUniform1f(
     uniforms["invGamma"].location,
     invGamma
   );
-
   GLfloat maxLightIntensity = scene.getMaxLightIntensity();
   glUniform1f(
     uniforms["maxLightIntensity"].location,
@@ -400,48 +396,50 @@ Renderer& Renderer::setMaterialUniforms(GLProgram& prog, Material& material){
 }
 
 Renderer& Renderer::initializeGeometryBuffers(Geometry& geom){
-  if((this->buffers[geom.getUUID()].find("vertex")== this->buffers[geom.getUUID()].end()) && !geom.getVertices().empty()){
+  auto &buffer = this->buffers[geom.getUUID()];
+
+  if((buffer.find("vertex")== buffer.end()) && !geom.getVertices().empty()){
     int buf = makeBuffer(
       GL_ARRAY_BUFFER,
       (void*)&geom.getVertices().front(),
       geom.getVertices().size() * sizeof(GLfloat)
     );
-    this->buffers[geom.getUUID()]["vertex"].buffer = buf;
+    buffer["vertex"].buffer = buf;
   }
 
-  if((this->buffers[geom.getUUID()].find("index")== this->buffers[geom.getUUID()].end()) && !geom.getElements().empty()){
+  if((buffer.find("index")== buffer.end()) && !geom.getElements().empty()){
     int buf = makeBuffer(
       GL_ELEMENT_ARRAY_BUFFER,
       (void*)&geom.getElements().front(),
       geom.getElements().size() * sizeof(GLushort)
     );
-    this->buffers[geom.getUUID()]["index"].buffer = buf;
+    buffer["index"].buffer = buf;
   }
 
-  if((this->buffers[geom.getUUID()].find("normal")== this->buffers[geom.getUUID()].end()) && !geom.getNormals().empty()){
+  if((buffer.find("normal")== buffer.end()) && !geom.getNormals().empty()){
     int buf = makeBuffer(
       GL_ARRAY_BUFFER,
       (void*)&geom.getNormals().front(),
       geom.getNormals().size() * sizeof(GLfloat)
     );
-    this->buffers[geom.getUUID()]["normal"].buffer = buf;
+    buffer["normal"].buffer = buf;
   }
-  if((this->buffers[geom.getUUID()].find("uv")== this->buffers[geom.getUUID()].end()) && !geom.getTexCoords().empty()){
+  if((buffer.find("uv")== buffer.end()) && !geom.getTexCoords().empty()){
     int buf = makeBuffer(
       GL_ARRAY_BUFFER,
       (void*)&geom.getTexCoords().front(),
       geom.getTexCoords().size() * sizeof(GLfloat)
     );
-    this->buffers[geom.getUUID()]["uv"].buffer = buf;
+    buffer["uv"].buffer = buf;
   }
 
-  if((this->buffers[geom.getUUID()].find("tangent")== this->buffers[geom.getUUID()].end()) && !geom.getTangents().empty()){
+  if((buffer.find("tangent")== buffer.end()) && !geom.getTangents().empty()){
     int buf = makeBuffer(
       GL_ARRAY_BUFFER,
       (void*)&geom.getTangents().front(),
       geom.getTangents().size() * sizeof(GLfloat)
     );
-    this->buffers[geom.getUUID()]["tangent"].buffer = buf;
+    buffer["tangent"].buffer = buf;
   }
 
   geom.setInitialized(true);
@@ -450,7 +448,8 @@ Renderer& Renderer::initializeGeometryBuffers(Geometry& geom){
 }
 
 Renderer& Renderer::setUpVertexAttributes(Geometry& geom, GLProgram& prog, bool shadowPass){
-  glBindBuffer(GL_ARRAY_BUFFER,this->buffers[geom.getUUID()]["vertex"].buffer);
+  auto &buffer = this->buffers[geom.getUUID()];
+  glBindBuffer(GL_ARRAY_BUFFER,buffer["vertex"].buffer);
   glVertexAttribPointer(
     prog.getAttrPosition(),
     3,
@@ -463,8 +462,8 @@ Renderer& Renderer::setUpVertexAttributes(Geometry& geom, GLProgram& prog, bool 
 
   if(shadowPass) return *this;
 
-  if((this->buffers[geom.getUUID()].find("normal")!= this->buffers[geom.getUUID()].end())){
-    glBindBuffer(GL_ARRAY_BUFFER,this->buffers[geom.getUUID()]["normal"].buffer);
+  if((buffer.find("normal")!= buffer.end())){
+    glBindBuffer(GL_ARRAY_BUFFER,buffer["normal"].buffer);
     glVertexAttribPointer(
       prog.getAttrNormal(),
       3,
@@ -475,8 +474,8 @@ Renderer& Renderer::setUpVertexAttributes(Geometry& geom, GLProgram& prog, bool 
     );
     glEnableVertexAttribArray(prog.getAttrNormal());
   }
-  if((this->buffers[geom.getUUID()].find("tangent")!= this->buffers[geom.getUUID()].end())){
-    glBindBuffer(GL_ARRAY_BUFFER,this->buffers[geom.getUUID()]["tangent"].buffer);
+  if((buffer.find("tangent")!= buffer.end())){
+    glBindBuffer(GL_ARRAY_BUFFER,buffer["tangent"].buffer);
     glVertexAttribPointer(
       prog.getAttrTangent(),
       3,
@@ -487,8 +486,8 @@ Renderer& Renderer::setUpVertexAttributes(Geometry& geom, GLProgram& prog, bool 
     );
     glEnableVertexAttribArray(prog.getAttrTangent());
   }
-  if((this->buffers[geom.getUUID()].find("uv")!= this->buffers[geom.getUUID()].end())){
-    glBindBuffer(GL_ARRAY_BUFFER,this->buffers[geom.getUUID()]["uv"].buffer);
+  if((buffer.find("uv")!= buffer.end())){
+    glBindBuffer(GL_ARRAY_BUFFER,buffer["uv"].buffer);
     glVertexAttribPointer(
       prog.getAttrUV(),
       2,
@@ -503,8 +502,9 @@ Renderer& Renderer::setUpVertexAttributes(Geometry& geom, GLProgram& prog, bool 
 }
 
 Renderer& Renderer::drawGeometry(Geometry& geom){
+  auto &buffer = this->buffers[geom.getUUID()];
   if (!geom.getElements().empty()){
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,this->buffers[geom.getUUID()]["index"].buffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buffer["index"].buffer);
     glDrawElements(
       GL_TRIANGLES,
       geom.getElements().size(),
@@ -512,7 +512,7 @@ Renderer& Renderer::drawGeometry(Geometry& geom){
       (void*)0
     );
   }else{
-    glBindBuffer(GL_ARRAY_BUFFER,this->buffers[geom.getUUID()]["vertex"].buffer);
+    glBindBuffer(GL_ARRAY_BUFFER,buffer["vertex"].buffer);
     int numVertices = geom.getVertices().size() / 3;
     glDrawArrays(
       GL_TRIANGLES,
