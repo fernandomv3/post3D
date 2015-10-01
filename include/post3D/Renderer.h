@@ -42,6 +42,7 @@ private:
 	unique_ptr<GBuffer> gBuffer;
 	std::unordered_map<std::string,std::unordered_map<std::string,Attribute>> buffers;
 	std::unordered_map<std::string,GLTexture> textures;
+  	std::unordered_map<std::string,GLProgram> programs;
 	bool renderShadows;
 	bool softShadows;
 	bool deferred;
@@ -56,7 +57,7 @@ private:
 	vector<unique_ptr<float[]>> calculatePointLights(Scene& scene);
 	Renderer& calculateAmbientLights(Scene& scene);
 	vector<unique_ptr<float[]>> calculateGlobalMatrices(Scene& scene);
-	Renderer& setMaterialUniforms(Uniforms& uniforms, Material& material);
+	Renderer& setMaterialUniforms(GLProgram& prog, Material& material);
 	Mat4 shadowPassRender(Scene& scene);
 	Renderer& geometryPassRender(Scene& scene);
 	Renderer& lightPassRender(Scene& scene);
@@ -66,11 +67,11 @@ private:
 	Renderer& renderDeferred(Scene& scene);
 	Renderer& createVAO();
 	Renderer& drawGeometry(Geometry& geom);
-	Renderer& setUpObjectUniforms(Uniforms& uniforms,Mesh& mesh);
-	Renderer& setUpPointLightsUniforms(Uniforms& uniforms,Scene& scene, vector<unique_ptr<float[]>> & pLightData);
-	Renderer& setUpDirectionalLightsUniforms(Uniforms& uniforms,Scene& scene, vector<unique_ptr<float[]>> & dLightData);
-	Renderer& setUpAmbientLightUniforms(Uniforms& uniforms,Scene& scene, Light& ambLight);
-	Renderer& setUpGlobalUniforms(Uniforms& uniforms,Scene& scene,vector<unique_ptr<float[]>> &matrices,Mat4& lightWorldMatrix);
+	Renderer& setUpObjectUniforms(GLProgram& prog,Mesh& mesh);
+	Renderer& setUpPointLightsUniforms(GLProgram& prog,Scene& scene, vector<unique_ptr<float[]>> & pLightData);
+	Renderer& setUpDirectionalLightsUniforms(GLProgram& prog,Scene& scene, vector<unique_ptr<float[]>> & dLightData);
+	Renderer& setUpAmbientLightUniforms(GLProgram& prog,Scene& scene, Light& ambLight);
+	Renderer& setUpGlobalUniforms(GLProgram& prog,Scene& scene,vector<unique_ptr<float[]>> &matrices,Mat4& lightWorldMatrix);
 public:
 	Renderer();
 	Renderer(const Renderer& renderer)=delete;

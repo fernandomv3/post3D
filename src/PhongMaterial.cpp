@@ -102,6 +102,7 @@ void PhongMaterial::makeForwardShader(){
 			ssb.fragmentChunk["addPointLightsFactor"] +
             ssb.fragmentChunk["addAmbientLightFactor"] +
 			ssb.fragmentChunk["gammaCorrection"] +
+			//"outputColor = vec4(0.5,0.5,0.5,0.0);\n" +
         "}\n"
 	);
 }
@@ -207,37 +208,41 @@ void PhongMaterial::makePrograms(const Scene& scene, bool deferred){
 	glBindAttribLocation(prog,2,"uv");
 	this->getProgram()->setAttrTangent(3);
 	glBindAttribLocation(prog,3,"tangent");
-	this->getProgram()->getUniforms()->unifModelMatrix = glGetUniformLocation(prog,"modelMatrix");
-	this->getProgram()->getUniforms()->unifDiffuseColor = glGetUniformLocation(prog,"material.diffuseColor");
-	this->getProgram()->getUniforms()->unifSpecularColor = glGetUniformLocation(prog,"material.specularColor");
-	this->getProgram()->getUniforms()->unifMaxLightIntensity = glGetUniformLocation(prog,"maxLightIntensity");
-	this->getProgram()->getUniforms()->unifInvGamma = glGetUniformLocation(prog,"invGamma");
-	this->getProgram()->getUniforms()->unifShininess = glGetUniformLocation(prog,"material.shininess");
-	this->getProgram()->getUniforms()->unifWorldMatrix = glGetUniformLocation(prog,"worldMatrix");
-	this->getProgram()->getUniforms()->unifProjectionMatrix = glGetUniformLocation(prog,"projectionMatrix");
+	auto &uniforms = this->program->getpUniforms();
+	this->program->getpUniforms()["modelMatrix"].location = glGetUniformLocation(prog,"modelMatrix");
+	this->program->getpUniforms()["diffuseColor"].location = glGetUniformLocation(prog,"material.diffuseColor");
+	this->program->getpUniforms()["specularColor"].location = glGetUniformLocation(prog,"material.specularColor");
+	this->program->getpUniforms()["maxLightIntensity"].location = glGetUniformLocation(prog,"maxLightIntensity");
+	this->program->getpUniforms()["invGamma"].location = glGetUniformLocation(prog,"invGamma");
+	this->program->getpUniforms()["shininess"].location = glGetUniformLocation(prog,"material.shininess");
+	this->program->getpUniforms()["worldMatrix"].location = glGetUniformLocation(prog,"worldMatrix");
+	this->program->getpUniforms()["projectionMatrix"].location = glGetUniformLocation(prog,"projectionMatrix");
 	if(scene.getDirectionalLights().size() > 0){
-		this->getProgram()->getUniforms()->unifDirLightColor = glGetUniformLocation(prog,"dirLightColor");
-        this->getProgram()->getUniforms()->unifDirLightVectorToLight = glGetUniformLocation(prog,"dirLightVectorToLight");
-        this->getProgram()->getUniforms()->unifDirLightIntensity = glGetUniformLocation(prog,"dirLightIntensity");
+		this->program->getpUniforms()["dirLightColor"].location = glGetUniformLocation(prog,"dirLightColor");
+        this->program->getpUniforms()["dirLightVectorToLight"].location = glGetUniformLocation(prog,"dirLightVectorToLight");
+        this->program->getpUniforms()["dirLightIntensity"].location = glGetUniformLocation(prog,"dirLightIntensity");
 	}
-	this->getProgram()->getUniforms()->unifAmbientLight = glGetUniformLocation(prog,"ambientLight");
+	this->program->getpUniforms()["ambientLight"].location = glGetUniformLocation(prog,"ambientLight");
 	if(scene.getPointLights().size()){
-        this->getProgram()->getUniforms()->unifPointLightColor = glGetUniformLocation(prog,"pointLightColor");
-        this->getProgram()->getUniforms()->unifPointLightPosition = glGetUniformLocation(prog,"pointLightPosition");
-        this->getProgram()->getUniforms()->unifPointLightIntensity = glGetUniformLocation(prog,"pointLightIntensity");
-        this->getProgram()->getUniforms()->unifPointLightAttenuation = glGetUniformLocation(prog,"pointLightAttenuation");
+        this->program->getpUniforms()["pointLightColor"].location = glGetUniformLocation(prog,"pointLightColor");
+        this->program->getpUniforms()["pointLightPosition"].location = glGetUniformLocation(prog,"pointLightPosition");
+        this->program->getpUniforms()["pointLightIntensity"].location = glGetUniformLocation(prog,"pointLightIntensity");
+        this->program->getpUniforms()["pointLightAttenuation"].location = glGetUniformLocation(prog,"pointLightAttenuation");
 	}
 	if(scene.getUsesShadows()){
-        this->getProgram()->getUniforms()->unifDepthWorldMatrix = glGetUniformLocation(prog,"depthWorldMatrix");
-        this->getProgram()->getUniforms()->unifShadowMapSampler = glGetUniformLocation(prog, "shadowMap");
-        this->getProgram()->getUniforms()->unifShadowMapSize = glGetUniformLocation(prog,"shadowMapSize");
-        this->getProgram()->getUniforms()->unifSampleSize = glGetUniformLocation(prog,"sampleSize");
+        this->program->getpUniforms()["depthWorldMatrix"].location = glGetUniformLocation(prog,"depthWorldMatrix");
+        this->program->getpUniforms()["shadowMapSampler"].location = glGetUniformLocation(prog, "shadowMap");
+        this->program->getpUniforms()["shadowMapSize"].location = glGetUniformLocation(prog,"shadowMapSize");
+        this->program->getpUniforms()["sampleSize"].location = glGetUniformLocation(prog,"sampleSize");
 	}
 	if(this->map){
-		this->getProgram()->getUniforms()->unifMapSampler = glGetUniformLocation(prog, "colorMap");
+		this->program->getpUniforms()["mapSampler"].location = glGetUniformLocation(prog, "colorMap");
 	}
 	if(this->normalMap){
-		this->getProgram()->getUniforms()->unifNormalMapSampler = glGetUniformLocation(prog, "normalMap");
+		this->program->getpUniforms()["normalMapSampler"].location = glGetUniformLocation(prog, "normalMap");
+	}
+	for(auto kv : uniforms) {
+		cout << kv.first << " : " << kv.second.location << endl;
 	}
 }
 }

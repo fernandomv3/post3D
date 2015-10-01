@@ -4,33 +4,6 @@
 
 namespace material{
 
-Uniforms::Uniforms(){
-  this->unifModelMatrix= -1;
-  this->unifBlockAmbientLight= -1;
-  this->unifDiffuseColor= -1;
-  this->unifSpecularColor= -1;
-  this->unifShininess= -1;
-  this->unifDistanceToCamera= -1;
-  this->unifMaxLightIntensity= -1;
-  this->unifInvGamma= -1;
-  this->unifMapSampler= -1;
-  this->unifNormalMapSampler= -1;
-  this->unifShadowMapSampler= -1;
-  this->unifWorldMatrix= -1;
-  this->unifProjectionMatrix= -1;
-  this->unifDirLightColor= -1;
-  this->unifDirLightVectorToLight= -1;
-  this->unifDirLightIntensity= -1;
-  this->unifPointLightColor= -1;
-  this->unifPointLightPosition= -1;
-  this->unifPointLightIntensity= -1;
-  this->unifPointLightAttenuation= -1;
-  this->unifAmbientLight= -1;
-  this->unifDepthWorldMatrix= -1;
-  this->unifSampleSize= -1;
-  this->unifShadowMapSize= -1;
-}
-
 GLProgram::GLProgram(){
   this->vertexShader = 0;
   this->fragmentShader = 0;
@@ -41,7 +14,6 @@ GLProgram::GLProgram(){
   this->attrNormal = 0;
   this->attrUV = 0;
   this->attrTangent = 0;
-  this->uniforms = std::shared_ptr<Uniforms>(new Uniforms());
 }
 
 int GLProgram::getVertexShader()const{
@@ -78,10 +50,6 @@ int GLProgram::getAttrTangent()const{
 
 int GLProgram::getAttrNormal()const{
   return this->attrNormal;
-}
-
-std::shared_ptr<Uniforms> GLProgram::getUniforms()const{
-  return this->uniforms;
 }
 
 GLProgram& GLProgram::setVertexShader(int vertexShader){
@@ -126,11 +94,6 @@ GLProgram& GLProgram::setAttrTangent(int attrTangent){
 
 GLProgram& GLProgram::setAttrNormal(int attrNormal){
   this->attrNormal = attrNormal;
-  return *this;
-}
-
-GLProgram& GLProgram::setUniforms(std::shared_ptr<Uniforms> uniforms){
-  this->uniforms = uniforms;
   return *this;
 }
 
@@ -192,7 +155,7 @@ int GLProgram::linkProgram(int vertexShader, int fragmentShader){
   return program;
 }
 
-const std::unordered_map<std::string,Uniform>& GLProgram::getpUniforms(){
+std::unordered_map<std::string,Uniform>& GLProgram::getpUniforms(){
   return this->puniforms;
 }
 

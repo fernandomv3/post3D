@@ -5,6 +5,7 @@
 #include "post3D/Scene.h"
 
 using namespace scene;
+
 namespace material{
 	class DepthMaterial: public Material{
 	public:

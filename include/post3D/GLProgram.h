@@ -25,35 +25,6 @@ struct shader{
 };
 typedef struct shader Shader;
 
-class Uniforms {
-public:
-  int unifModelMatrix;
-  int unifBlockAmbientLight;
-  int unifDiffuseColor;
-  int unifSpecularColor;
-  int unifShininess;
-  int unifDistanceToCamera;
-  int unifMaxLightIntensity;
-  int unifInvGamma;
-  int unifMapSampler;
-  int unifNormalMapSampler;
-  int unifShadowMapSampler;
-  int unifWorldMatrix;
-  int unifProjectionMatrix;
-  int unifDirLightColor;
-  int unifDirLightVectorToLight;
-  int unifDirLightIntensity;
-  int unifPointLightColor;
-  int unifPointLightPosition;
-  int unifPointLightIntensity;
-  int unifPointLightAttenuation;
-  int unifAmbientLight;
-  int unifDepthWorldMatrix;
-  int unifSampleSize;
-  int unifShadowMapSize;
-  Uniforms();
-};
-
 class GLProgram{
 private:
   int vertexShader;
@@ -65,7 +36,6 @@ private:
   int attrNormal;
   int attrUV;
   int attrTangent;
-  std::shared_ptr<Uniforms> uniforms;
   std::unordered_map<std::string,Uniform> puniforms;
   std::vector<Shader> shaders;
 public:
@@ -79,7 +49,6 @@ public:
   int getAttrUV()const;
   int getAttrTangent()const;
   int getAttrNormal()const;
-  std::shared_ptr<Uniforms> getUniforms()const;
   GLProgram& setVertexShader(int vertexShader);
   GLProgram& setFragmentShader(int fragmentShader);
   GLProgram& setTessEvaluationShader(int tessEvaluationShader);
@@ -89,14 +58,14 @@ public:
   GLProgram& setAttrUV(int attrUV);
   GLProgram& setAttrTangent(int attrTangent);
   GLProgram& setAttrNormal(int attrNormal);
-  GLProgram& setUniforms(std::shared_ptr<Uniforms> uniforms);
   std::string getSourceFromFile(std::string filename);
   int compileShader(GLenum type, std::string source);
   int linkProgram(int vertexShader, int fragmentShader);
-  const std::unordered_map<std::string,Uniform>& getpUniforms();
+  std::unordered_map<std::string,Uniform>& getpUniforms();
   const std::vector<Shader>& getShaders();
   //int linkProgramTessellation(int vertexShader, int fragmentShader, int tessControlShader, int tessEvaluationShader);
   ~GLProgram();
+  GLProgram& addUniform(std::string name, std::string type, void* value);
 };
 }
 #endif

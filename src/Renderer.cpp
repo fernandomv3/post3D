@@ -186,68 +186,70 @@ vector<unique_ptr<float[]>> Renderer::calculateGlobalMatrices(Scene& scene){
   return result;
 }
 
-Renderer& Renderer::setUpGlobalUniforms(Uniforms& uniforms, Scene& scene, vector<unique_ptr<float[]>> &matrices, Mat4& lightWorldMatrix){
-  if(uniforms.unifWorldMatrix != -1){
+Renderer& Renderer::setUpGlobalUniforms(GLProgram& prog, Scene& scene, vector<unique_ptr<float[]>> &matrices, Mat4& lightWorldMatrix){
+  auto uniforms = prog.getpUniforms();
+  if(uniforms.find("worldMatrix") != uniforms.end()){
     glUniformMatrix4fv(
-      uniforms.unifWorldMatrix,
+      uniforms["worldMatrix"].location,
       1,
       GL_TRUE,
       matrices[0].get()
     );
   }
-  if(uniforms.unifProjectionMatrix != -1){
+  if(uniforms.find("projectionMatrix") != uniforms.end()){
     glUniformMatrix4fv(
-      uniforms.unifProjectionMatrix,
+      uniforms["projectionMatrix"].location,
       1,
       GL_TRUE,
       matrices[1].get()
     );
   }
-  if(uniforms.unifDepthWorldMatrix != -1){
+  if(uniforms.find("depthWorldMatrix") != uniforms.end()){
     glUniformMatrix4fv(
-      uniforms.unifDepthWorldMatrix,
+      uniforms["depthWorldMatrix"].location,
       1,
       GL_TRUE,
       lightWorldMatrix.getAsArray().get()
     );
   }
-  if(uniforms.unifInvGamma != -1){
+  if(uniforms.find("invGamma") != uniforms.end()){
     GLfloat invGamma = 1/scene.getCamera()->getGamma();
     glUniform1f(
-      uniforms.unifInvGamma,
+      uniforms["invGamma"].location,
       invGamma
     );
   }
-  if(uniforms.unifMaxLightIntensity != -1){
+  if(uniforms.find("maxLightIntensity") != uniforms.end()){
     GLfloat maxLightIntensity = scene.getMaxLightIntensity();
     glUniform1f(
-      uniforms.unifMaxLightIntensity,
+      uniforms["maxLightIntensity"].location,
       maxLightIntensity
     );
   }
   return *this;
 }
 
-Renderer& Renderer::setUpDirectionalLightsUniforms(Uniforms& uniforms,Scene& scene,vector<unique_ptr<float[]>>& dlightData){
+Renderer& Renderer::setUpDirectionalLightsUniforms(GLProgram& prog,Scene& scene,vector<unique_ptr<float[]>>& dlightData){
+  auto uniforms = prog.getpUniforms();
   int numDirLights = scene.getDirectionalLights().size();
   if(numDirLights > 0){
-    if(uniforms.unifDirLightColor != -1){
+    if(uniforms.find("dirLightColor") != uniforms.end()){
       glUniform4fv(
-        uniforms.unifDirLightColor,
+        uniforms["dirLightColor"].location,
         numDirLights,
         dlightData[1].get()
       );
     }
-    if(uniforms.unifDirLightVectorToLight != -1){
+    if(uniforms.find("dirLightVectorToLight") != uniforms.end()){
       glUniform4fv(
-        uniforms.unifDirLightVectorToLight,
+        uniforms["dirLightVectorToLight"].location,
         numDirLights,
         dlightData[0].get()
       );
     }
-    if(uniforms.unifDirLightIntensity != -1){
+    if(uniforms.find("dirLightIntensity") != uniforms.end()){
       glUniform1fv(
-        uniforms.unifDirLightIntensity,
+        uniforms["dirLightIntensity"].location,
         numDirLights,
         dlightData[2].get()
       );
@@ -256,26 +258,27 @@ Renderer& Renderer::setUpDirectionalLightsUniforms(Uniforms& uniforms,Scene& sce
   return *this;
 }
 
-Renderer& Renderer::setUpPointLightsUniforms(Uniforms& uniforms,Scene& scene,vector<unique_ptr<float[]>>& plightData){
+Renderer& Renderer::setUpPointLightsUniforms(GLProgram& prog,Scene& scene,vector<unique_ptr<float[]>>& plightData){
+  auto uniforms = prog.getpUniforms();
   int numPLights = scene.getPointLights().size();
-  if(numPLights > 0 && uniforms.unifPointLightColor != -1){
+  if(numPLights > 0 && uniforms.find("pointLightColor") != uniforms.end()){
     glUniform4fv(
-      uniforms.unifPointLightColor,
+      uniforms["pointLightColor"].location,
       numPLights,
       plightData[0].get()
     );
     glUniform4fv(
-      uniforms.unifPointLightPosition,
+      uniforms["pointLightPosition"].location,
       numPLights,
       plightData[1].get()
     );
     glUniform1fv(
-      uniforms.unifPointLightIntensity,
+      uniforms["pointLightIntensity"].location,
       numPLights,
       plightData[2].get()
     );
     glUniform1fv(
-      uniforms.unifPointLightAttenuation,
+      uniforms["pointLightAttenuation"].location,
       numPLights,
       plightData[3].get()
     );
@@ -283,10 +286,11 @@ Renderer& Renderer::setUpPointLightsUniforms(Uniforms& uniforms,Scene& scene,vec
   return *this;
 }
 
-Renderer& Renderer::setUpAmbientLightUniforms(Uniforms& uniforms,Scene& scene,Light& ambLight){
-  if(uniforms.unifAmbientLight != -1){
+Renderer& Renderer::setUpAmbientLightUniforms(GLProgram& prog,Scene& scene,Light& ambLight){
+  auto uniforms = prog.getpUniforms();
+  if(uniforms.find("ambientLight") != uniforms.end()){
     glUniform4fv(
-      uniforms.unifAmbientLight,
+      uniforms["ambientLight"].location,
       1,
       scene.getAmbientLight()->getColor()->getAsArray().get()
     );
@@ -294,11 +298,12 @@ Renderer& Renderer::setUpAmbientLightUniforms(Uniforms& uniforms,Scene& scene,Li
   return *this;
 }
 
-Renderer& Renderer::setUpObjectUniforms(Uniforms& uniforms, Mesh& mesh){
+Renderer& Renderer::setUpObjectUniforms(GLProgram& prog, Mesh& mesh){
+  auto uniforms = prog.getpUniforms();
   mesh.updateModelMatrix();
-  if(uniforms.unifModelMatrix != -1){
+  if(uniforms.find("modelMatrix") != uniforms.end()){
     glUniformMatrix4fv(
-      uniforms.unifModelMatrix,
+      uniforms["modelMatrix"].location,
       1,
       GL_TRUE,
       mesh.getModelMatrix()->getAsArray().get()
@@ -344,45 +349,46 @@ Renderer& Renderer::initTexture(Texture& texture){
   return *this;
 }
 
-Renderer& Renderer::setMaterialUniforms(Uniforms& uniforms, Material& material){
+Renderer& Renderer::setMaterialUniforms(GLProgram& prog, Material& material){
+  auto uniforms = prog.getpUniforms();
   auto diffuseColor = material.getDiffuseColor()->getAsArray();
-  if(uniforms.unifDiffuseColor != -1){
+  if(uniforms.find("diffuseColor") != uniforms.end()){
     glUniform4fv(
-      uniforms.unifDiffuseColor,
+      uniforms["diffuseColor"].location,
       1,
       diffuseColor.get()
     );
   }
   auto specularColor = material.getSpecularColor()->getAsArray();
-  if(uniforms.unifSpecularColor != -1){
+  if(uniforms.find("specularColor") != uniforms.end()){
     glUniform4fv(
-      uniforms.unifSpecularColor,
+      uniforms["specularColor"].location,
       1,
       specularColor.get()
     );
   }
   float shininess = material.getShininess();
-  if(uniforms.unifShininess != -1){
+  if(uniforms.find("shininess") != uniforms.end()){
     glUniform1fv(
-      uniforms.unifShininess,
+      uniforms["shininess"].location,
       1,
       &shininess
     );
   }
-  if(uniforms.unifMapSampler != -1){
-    glUniform1i(uniforms.unifMapSampler,MAP);
+  if(uniforms.find("mapSampler") != uniforms.end()){
+    glUniform1i(uniforms["mapSampler"].location,MAP);
   }
-  if(uniforms.unifNormalMapSampler != -1){
-    glUniform1i(uniforms.unifNormalMapSampler,NORMALMAP);
+  if(uniforms.find("normalMapSampler") != uniforms.end()){
+    glUniform1i(uniforms["normalMapSampler"].location,NORMALMAP);
   }
-  if(uniforms.unifShadowMapSampler != -1){
-    glUniform1i(uniforms.unifShadowMapSampler,SHADOWMAP);
+  if(uniforms.find("shadowMapSampler") != uniforms.end()){
+    glUniform1i(uniforms["shadowMapSampler"].location,SHADOWMAP);
   }
-  if(uniforms.unifSampleSize != -1){
-    glUniform1i(uniforms.unifSampleSize,this->shadowMap->getSampleSize());
+  if(uniforms.find("sampleSize") != uniforms.end()){
+    glUniform1i(uniforms["sampleSize"].location,this->shadowMap->getSampleSize());
   }
-  if(uniforms.unifShadowMapSize != -1){
-    glUniform2f(uniforms.unifShadowMapSize,this->shadowMap->getWidth(),this->shadowMap->getHeight());
+  if(uniforms.find("shadowMapSize") != uniforms.end()){
+    glUniform2f(uniforms["shadowMapSize"].location,this->shadowMap->getWidth(),this->shadowMap->getHeight());
   }
   
   if(material.getMap()){
@@ -410,12 +416,6 @@ Renderer& Renderer::setMaterialUniforms(Uniforms& uniforms, Material& material){
     GLTexture tex = this->textures[this->shadowMap->getTexture()->getUUID()];
     glBindTexture(GL_TEXTURE_2D,tex.texture);
     glBindSampler(SHADOWMAP,tex.sampler);
-    /*glActiveTexture(GL_TEXTURE0 + SHADOWMAP);
-    glBindTexture(GL_TEXTURE_2D,this->shadowMap->getTexture()->getTexture());
-    if(!this->shadowMap->getTexture()->getSampler()){
-      this->shadowMap->getTexture()->setSampler(this->shadowMap->getTexture()->makeSampler());
-    }
-    glBindSampler(SHADOWMAP,this->shadowMap->getTexture()->getSampler());*/
   }
   return *this;
 }
@@ -561,11 +561,9 @@ Mat4 Renderer::shadowPassRender(Scene& scene){
   if(!material->getProgram()){
     material->makePrograms(scene);
   }
-
-  auto uniforms = material->getProgram()->getUniforms();
   glUseProgram(material->getProgram()->getProgram());
 
-  this->setUpGlobalUniforms(*uniforms,scene,matrices,*shared_ptr<Mat4>(new Mat4()));
+  this->setUpGlobalUniforms(*material->getProgram(),scene,matrices,*shared_ptr<Mat4>(new Mat4()));
 
   for(auto obj : scene.getObjects() ){
     auto mesh = static_pointer_cast<Mesh>(obj);
@@ -577,7 +575,7 @@ Mat4 Renderer::shadowPassRender(Scene& scene){
 
     this->setUpVertexAttributes(*mesh->getGeometry(),*material->getProgram(),true);
 
-    this->setUpObjectUniforms(*uniforms,*mesh);
+    this->setUpObjectUniforms(*material->getProgram(),*mesh);
 
     this->drawGeometry(*mesh->getGeometry());
     glDisableVertexAttribArray(material->getProgram()->getAttrPosition());
@@ -615,27 +613,28 @@ Renderer& Renderer::renderForward(Scene& scene){
   for(auto obj : scene.getObjects()){
     auto mesh = static_pointer_cast<Mesh>(obj);
     if(!mesh->getVisible()) continue;
-
     if(!mesh->getGeometry()->isInitialized())
       this->initializeGeometryBuffers(*mesh->getGeometry());
 
+    auto it = this->programs.find(mesh->getMaterial()->getUUID());
+    if(it != this->programs.end()){
+      
+    }
+
     if(!mesh->getMaterial()->getProgram())
       mesh->getMaterial()->makePrograms(scene);
-
     this->setUpVertexAttributes(*mesh->getGeometry(),*mesh->getMaterial()->getProgram());
 
     glUseProgram(mesh->getMaterial()->getProgram()->getProgram());
 
-    auto uniforms = mesh->getMaterial()->getProgram()->getUniforms();
+    this->setUpGlobalUniforms(*mesh->getMaterial()->getProgram(),scene,matrices,*lightWorldMatrix);
 
-    this->setUpGlobalUniforms(*uniforms,scene,matrices,*lightWorldMatrix);
+    this->setUpDirectionalLightsUniforms(*mesh->getMaterial()->getProgram(),scene,dlightData);
+    this->setUpPointLightsUniforms(*mesh->getMaterial()->getProgram(),scene,plightData);
+    this->setUpAmbientLightUniforms(*mesh->getMaterial()->getProgram(),scene,*scene.getAmbientLight());
 
-    this->setUpDirectionalLightsUniforms(*uniforms,scene,dlightData);
-    this->setUpPointLightsUniforms(*uniforms,scene,plightData);
-    this->setUpAmbientLightUniforms(*uniforms,scene,*scene.getAmbientLight());
-
-    this->setUpObjectUniforms(*uniforms,*mesh);
-    this->setMaterialUniforms(*uniforms,*mesh->getMaterial());
+    this->setUpObjectUniforms(*mesh->getMaterial()->getProgram(),*mesh);
+    this->setMaterialUniforms(*mesh->getMaterial()->getProgram(),*mesh->getMaterial());
 
     this->drawGeometry(*mesh->getGeometry());
 
@@ -672,13 +671,11 @@ Renderer& Renderer::geometryPassRender(Scene& scene){
 
     glUseProgram(mesh->getMaterial()->getProgram()->getProgram());
 
-    auto uniforms = mesh->getMaterial()->getProgram()->getUniforms();
+    this->setUpGlobalUniforms(*mesh->getMaterial()->getProgram(),scene,matrices,*shared_ptr<Mat4>(new Mat4()));
 
-    this->setUpGlobalUniforms(*uniforms,scene,matrices,*shared_ptr<Mat4>(new Mat4()));
+    this->setUpObjectUniforms(*mesh->getMaterial()->getProgram(),*mesh);
 
-    this->setUpObjectUniforms(*uniforms,*mesh);
-
-    this->setMaterialUniforms(*uniforms,*mesh->getMaterial());
+    this->setMaterialUniforms(*mesh->getMaterial()->getProgram(),*mesh->getMaterial());
 
     this->drawGeometry(*mesh->getGeometry());
 
