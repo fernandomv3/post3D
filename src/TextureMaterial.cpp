@@ -44,9 +44,10 @@ namespace material{
 		int prog = this->getProgram()->linkProgram(vertexShader,fragmentShader);
 		this->getProgram()->setAttrPosition(1);
 		glBindAttribLocation(prog,1,"position");
-		this->getProgram()->getpUniforms()["diffuseColor"].location = glGetUniformLocation(prog,"diffuseColor");
+		auto &uniforms = this->program->getpUniforms();
+		uniforms["diffuseColor"].location = glGetUniformLocation(prog,"diffuseColor");
 		if(this->map){
-			this->getProgram()->getpUniforms()["mapSampler"].location = glGetUniformLocation(prog, "colorMap");
+			uniforms["mapSampler"].location = glGetUniformLocation(prog, "colorMap");
 		}
 	}
 }

@@ -209,37 +209,37 @@ void PhongMaterial::makePrograms(const Scene& scene, bool deferred){
 	this->getProgram()->setAttrTangent(3);
 	glBindAttribLocation(prog,3,"tangent");
 	auto &uniforms = this->program->getpUniforms();
-	this->program->getpUniforms()["modelMatrix"].location = glGetUniformLocation(prog,"modelMatrix");
-	this->program->getpUniforms()["diffuseColor"].location = glGetUniformLocation(prog,"material.diffuseColor");
-	this->program->getpUniforms()["specularColor"].location = glGetUniformLocation(prog,"material.specularColor");
-	this->program->getpUniforms()["maxLightIntensity"].location = glGetUniformLocation(prog,"maxLightIntensity");
-	this->program->getpUniforms()["invGamma"].location = glGetUniformLocation(prog,"invGamma");
-	this->program->getpUniforms()["shininess"].location = glGetUniformLocation(prog,"material.shininess");
-	this->program->getpUniforms()["worldMatrix"].location = glGetUniformLocation(prog,"worldMatrix");
-	this->program->getpUniforms()["projectionMatrix"].location = glGetUniformLocation(prog,"projectionMatrix");
+	uniforms["modelMatrix"].location = glGetUniformLocation(prog,"modelMatrix");
+	uniforms["diffuseColor"].location = glGetUniformLocation(prog,"material.diffuseColor");
+	uniforms["specularColor"].location = glGetUniformLocation(prog,"material.specularColor");
+	uniforms["maxLightIntensity"].location = glGetUniformLocation(prog,"maxLightIntensity");
+	uniforms["invGamma"].location = glGetUniformLocation(prog,"invGamma");
+	uniforms["shininess"].location = glGetUniformLocation(prog,"material.shininess");
+	uniforms["worldMatrix"].location = glGetUniformLocation(prog,"worldMatrix");
+	uniforms["projectionMatrix"].location = glGetUniformLocation(prog,"projectionMatrix");
 	if(scene.getDirectionalLights().size() > 0){
-		this->program->getpUniforms()["dirLightColor"].location = glGetUniformLocation(prog,"dirLightColor");
-        this->program->getpUniforms()["dirLightVectorToLight"].location = glGetUniformLocation(prog,"dirLightVectorToLight");
-        this->program->getpUniforms()["dirLightIntensity"].location = glGetUniformLocation(prog,"dirLightIntensity");
+		uniforms["dirLightColor"].location = glGetUniformLocation(prog,"dirLightColor");
+        uniforms["dirLightVectorToLight"].location = glGetUniformLocation(prog,"dirLightVectorToLight");
+        uniforms["dirLightIntensity"].location = glGetUniformLocation(prog,"dirLightIntensity");
 	}
-	this->program->getpUniforms()["ambientLight"].location = glGetUniformLocation(prog,"ambientLight");
+	uniforms["ambientLight"].location = glGetUniformLocation(prog,"ambientLight");
 	if(scene.getPointLights().size()){
-        this->program->getpUniforms()["pointLightColor"].location = glGetUniformLocation(prog,"pointLightColor");
-        this->program->getpUniforms()["pointLightPosition"].location = glGetUniformLocation(prog,"pointLightPosition");
-        this->program->getpUniforms()["pointLightIntensity"].location = glGetUniformLocation(prog,"pointLightIntensity");
-        this->program->getpUniforms()["pointLightAttenuation"].location = glGetUniformLocation(prog,"pointLightAttenuation");
+        uniforms["pointLightColor"].location = glGetUniformLocation(prog,"pointLightColor");
+        uniforms["pointLightPosition"].location = glGetUniformLocation(prog,"pointLightPosition");
+        uniforms["pointLightIntensity"].location = glGetUniformLocation(prog,"pointLightIntensity");
+        uniforms["pointLightAttenuation"].location = glGetUniformLocation(prog,"pointLightAttenuation");
 	}
 	if(scene.getUsesShadows()){
-        this->program->getpUniforms()["depthWorldMatrix"].location = glGetUniformLocation(prog,"depthWorldMatrix");
-        this->program->getpUniforms()["shadowMapSampler"].location = glGetUniformLocation(prog, "shadowMap");
-        this->program->getpUniforms()["shadowMapSize"].location = glGetUniformLocation(prog,"shadowMapSize");
-        this->program->getpUniforms()["sampleSize"].location = glGetUniformLocation(prog,"sampleSize");
+        uniforms["depthWorldMatrix"].location = glGetUniformLocation(prog,"depthWorldMatrix");
+        uniforms["shadowMapSampler"].location = glGetUniformLocation(prog, "shadowMap");
+        uniforms["shadowMapSize"].location = glGetUniformLocation(prog,"shadowMapSize");
+        uniforms["sampleSize"].location = glGetUniformLocation(prog,"sampleSize");
 	}
 	if(this->map){
-		this->program->getpUniforms()["mapSampler"].location = glGetUniformLocation(prog, "colorMap");
+		uniforms["mapSampler"].location = glGetUniformLocation(prog, "colorMap");
 	}
 	if(this->normalMap){
-		this->program->getpUniforms()["normalMapSampler"].location = glGetUniformLocation(prog, "normalMap");
+		uniforms["normalMapSampler"].location = glGetUniformLocation(prog, "normalMap");
 	}
 	for(auto kv : uniforms) {
 		cout << kv.first << " : " << kv.second.location << endl;

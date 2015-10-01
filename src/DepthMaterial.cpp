@@ -50,11 +50,12 @@ namespace material{
 		this->getProgram()->setProgram(prog);
 		this->getProgram()->setAttrPosition(1);
 		glBindAttribLocation(prog,1,"position");
-		this->getProgram()->getpUniforms()["modelMatrix"].location = glGetUniformLocation(prog,"modelMatrix");
-		this->getProgram()->getpUniforms()["worldMatrix"].location = glGetUniformLocation(prog,"worldMatrix");
-		this->getProgram()->getpUniforms()["projectionMatrix"].location = glGetUniformLocation(prog,"projectionMatrix");
+		auto &uniforms = this->program->getpUniforms();
+		uniforms["modelMatrix"].location = glGetUniformLocation(prog,"modelMatrix");
+		uniforms["worldMatrix"].location = glGetUniformLocation(prog,"worldMatrix");
+		uniforms["projectionMatrix"].location = glGetUniformLocation(prog,"projectionMatrix");
 		if(this->map){
-			this->getProgram()->getpUniforms()["mapSampler"].location = glGetUniformLocation(prog, "colorMap");
+			uniforms["mapSampler"].location = glGetUniformLocation(prog, "colorMap");
 		}
 	}
 }
