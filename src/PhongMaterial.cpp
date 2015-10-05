@@ -204,13 +204,6 @@ void PhongMaterial::makePrograms(const Scene& scene, bool deferred){
 
 	this->program->makeProgram();
 	int prog = this->program->getProgram();
-	//cout << vs << endl << fs << endl;
-	/*int vertexShader = this->getProgram()->compileShader(GL_VERTEX_SHADER,vs);
-	this->getProgram()->setVertexShader(vertexShader);
-	int fragmentShader = this->getProgram()->compileShader(GL_FRAGMENT_SHADER,fs);
-	this->getProgram()->setFragmentShader(fragmentShader);
-	prog = this->getProgram()->linkProgram(vertexShader,fragmentShader);
-	this->program->setProgram(prog);*/
 
 	this->getProgram()->setAttrPosition(1);
 	glBindAttribLocation(prog,1,"position");

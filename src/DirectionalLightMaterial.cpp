@@ -170,12 +170,6 @@ void DirectionalLightMaterial::makePrograms(const Scene& scene, bool deferred){
 
 	this->program->makeProgram();
 	int prog = this->program->getProgram();
-	/*int vertexShader = this->getProgram()->compileShader(GL_VERTEX_SHADER,vs);
-	this->getProgram()->setVertexShader(vertexShader);
-	int fragmentShader = this->getProgram()->compileShader(GL_FRAGMENT_SHADER,fs);
-	this->getProgram()->setFragmentShader(fragmentShader);
-	int prog = this->getProgram()->linkProgram(vertexShader,fragmentShader);
-	this->program->setProgram(prog);*/
 	this->getProgram()->setAttrPosition(1);
 	glBindAttribLocation(prog,1,"position");
 	auto &uniforms = this->program->getpUniforms();
