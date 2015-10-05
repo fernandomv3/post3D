@@ -21,7 +21,7 @@ struct shader{
   std::string name;
   std::string type;
   std::string source;
-  int shaderObject;
+  int shaderObject = 0;
 };
 typedef struct shader Shader;
 
@@ -63,7 +63,7 @@ public:
   int compileShader(Shader& shader);
   int linkProgram(int vertexShader, int fragmentShader);
   std::unordered_map<std::string,Uniform>& getpUniforms();
-  const std::vector<Shader>& getShaders();
+  std::vector<Shader>& getShaders();
   //int linkProgramTessellation(int vertexShader, int fragmentShader, int tessControlShader, int tessEvaluationShader);
   int makeProgram();
   ~GLProgram();

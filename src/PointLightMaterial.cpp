@@ -172,12 +172,23 @@ void PointLightMaterial::makePrograms(const Scene& scene, bool deferred){
 		scene.getPCFShadows()
 	);
 	//cout << vs << endl << fs << endl;
-	int vertexShader = this->getProgram()->compileShader(GL_VERTEX_SHADER,vs);
+	Shader vertex, fragment;
+	vertex.type = "vertex";
+	fragment.type = "fragment";
+	vertex.source = vs;
+	fragment.source = fs;
+
+	this->program->getShaders().push_back(vertex);
+	this->program->getShaders().push_back(fragment);
+
+	this->program->makeProgram();
+	int prog = this->program->getProgram();
+	/*int vertexShader = this->getProgram()->compileShader(GL_VERTEX_SHADER,vs);
 	this->getProgram()->setVertexShader(vertexShader);
 	int fragmentShader = this->getProgram()->compileShader(GL_FRAGMENT_SHADER,fs);
 	this->getProgram()->setFragmentShader(fragmentShader);
 	int prog = this->getProgram()->linkProgram(vertexShader,fragmentShader);
-	this->program->setProgram(prog);
+	this->program->setProgram(prog);*/
 	this->getProgram()->setAttrPosition(1);
 	glBindAttribLocation(prog,1,"position");
 	this->getProgram()->setAttrNormal(0);

@@ -42,12 +42,24 @@ namespace material{
 
 	void DepthMaterial::makePrograms(const Scene& scene, bool deferred){
 		this->setProgram(shared_ptr<GLProgram>(new GLProgram()));
+		Shader vertex, fragment;
+		vertex.type = "vertex";
+		fragment.type = "fragment";
+		vertex.source = this->getVertexShaderSource();
+		fragment.source = this->getFragmentShaderSource();
+
+		this->program->getShaders().push_back(vertex);
+		this->program->getShaders().push_back(fragment);
+
+		this->program->makeProgram();
+		int prog = this->program->getProgram();
+/*
 		int vertexShader = this->getProgram()->compileShader(GL_VERTEX_SHADER,this->getVertexShaderSource());
 		this->getProgram()->setVertexShader(vertexShader);
 		int fragmentShader = this->getProgram()->compileShader(GL_FRAGMENT_SHADER,this->getFragmentShaderSource());
 		this->getProgram()->setFragmentShader(fragmentShader);
 		int prog = this->getProgram()->linkProgram(vertexShader,fragmentShader);
-		this->getProgram()->setProgram(prog);
+		this->getProgram()->setProgram(prog);*/
 		this->getProgram()->setAttrPosition(1);
 		glBindAttribLocation(prog,1,"position");
 		auto &uniforms = this->program->getpUniforms();

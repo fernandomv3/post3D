@@ -200,7 +200,7 @@ std::unordered_map<std::string,Uniform>& GLProgram::getpUniforms(){
   return this->puniforms;
 }
 
-const std::vector<Shader>& GLProgram::getShaders(){
+std::vector<Shader>& GLProgram::getShaders(){
   return this->shaders;
 }
 
@@ -209,6 +209,9 @@ int GLProgram::makeProgram(){
   int programValid;
   this->program = glCreateProgram();
   for( auto shader : this->shaders){
+    if (shader.shaderObject == 0){
+      this->compileShader(shader);
+    }
     glAttachShader(this->program, shader.shaderObject);
   }
   glLinkProgram(this->program);
