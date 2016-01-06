@@ -1,6 +1,7 @@
 #ifndef VEC3_H
 #define VEC3_H 
 #include <memory>
+#include <vector>
 
 /*Should be a Vec4 class with w component*/
 namespace math3D{
@@ -8,18 +9,15 @@ class Mat4;
 
 class Vec3{
 private:
-  float x;
-  float y;
-  float z;
-  float w;
+  std::vector<float> components;
 public:
-  Vec3()=default;
+  Vec3();
   Vec3(float x, float y, float z);
   ~Vec3()=default;
-  Vec3(const Vec3& v)=default;
-  Vec3(Vec3&& v)=default;
-  Vec3& operator=(const Vec3& v)=default;
-  Vec3& operator=(Vec3&& v)=default;
+  Vec3(const Vec3& v);
+  Vec3(Vec3&& v);
+  Vec3& operator=(const Vec3& v);
+  Vec3& operator=(Vec3&& v);
 
   //setters & getters soon to be deprecated
   Vec3& setX(float x);
