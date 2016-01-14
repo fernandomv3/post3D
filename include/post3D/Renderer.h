@@ -30,6 +30,7 @@ struct gltexture{
 	int texture;
 	int sampler;
 	int binding;
+	std::string name;
 };
 typedef struct gltexture GLTexture;
 
